@@ -1,0 +1,158 @@
+#app {
+    height: 100vh;
+    text-align: center;
+    display: flex;
+}
+
+#sidebar {
+    width: 300px;
+    height: 100vh;
+    overflow: auto;
+    background-color: aqua;
+}
+
+#main-window {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+#query-window {
+    flex-grow: 1;
+    background-color: pink;
+}
+
+#query-area {
+    padding: 5px;
+}
+
+#query-input {
+    box-sizing: border-box;
+    width: 100%;
+}
+
+#results-window {
+    display: flex;
+    flex-grow: 1;
+    background-color: yellow;
+    color: black;
+}
+
+.results-table-column {
+    flex-grow: 1;
+    border-color: black;
+    border-style: solid;
+    border-width: 1px;
+}
+
+.results-table-cell {
+    border-color: cyan;
+    border-style: solid;
+    border-width: 1px;
+}
+
+#connection-popup {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    /* background-color: rgba(0, 0, 0, 0.6) */
+}
+
+.connection-popup-background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.connection-popup-inner-window {
+    position: relative;
+    margin: auto;
+    width: 500px;
+    height: 500px;
+    background-color: aquamarine;
+}
+
+.connection-header {
+    height: 2rem;
+    background-color: #333333;
+}
+
+.connection-close {
+    cursor: pointer;
+    position: absolute;
+    right: 0px;
+    height: 2rem;
+    width: 2rem;
+    background-color: red;
+}
+
+.connection-settings-show {
+    cursor: pointer;
+    width: 100%;
+    background-color: #333333;
+}
+
+.server-name {
+    cursor: pointer;
+    background-color: grey;
+}
+
+.db-table {
+    background-color:rgb(164, 107, 107)
+}
+
+.result {
+    height: 20px;
+    line-height: 20px;
+    margin: 1.5rem auto;
+}
+
+.input-box {
+    width: 300px;
+    margin: auto;
+}
+
+.input-box .btn {
+    width: 100px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 3px;
+    border: none;
+    margin: 20px 0 0 20px;
+    padding: 0 8px;
+    cursor: pointer;
+}
+
+.input-box .btn:hover {
+    background-image: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);
+    color: #333333;
+}
+
+.input-box .input {
+    margin-top: 10px;
+    border: none;
+    border-radius: 3px;
+    outline: none;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 10px;
+    background-color: rgba(240, 240, 240, 1);
+    -webkit-font-smoothing: antialiased;
+}
+
+.input-box .input:hover {
+    border: none;
+    background-color: rgba(255, 255, 255, 1);
+}
+
+.input-box .input:focus {
+    border: none;
+    background-color: rgba(255, 255, 255, 1);
+}
+
+.output-box {
+    margin-top: 20px;
+    background: red;
+}

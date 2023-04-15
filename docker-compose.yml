@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  dbclient:
+    image: postgres:alpine
+    container_name: dbclient
+    network_mode: "host"
+    restart: on-failure
+    environment:
+      POSTGRES_DB: "dbclient"
+      POSTGRES_USER: "dbclient"
+      POSTGRES_PASSWORD: "dbclient"
+    ports:
+      - "5432:5432"
+    volumes:
+      - golang-data:/var/lib/postgresql/data
+volumes:
+  golang-data:
