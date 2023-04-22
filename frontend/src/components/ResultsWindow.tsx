@@ -10,7 +10,7 @@ function ResultsWindow (props: QueryResult) {
     return <div>Request failed.<br/>{error}</div>
   }
 
-  if (!data || !data[0]) {
+  if (!data || !data[0]) { // TODO: check this (remove message on start)
     return <div>Request finished successfully</div>;
   }
 

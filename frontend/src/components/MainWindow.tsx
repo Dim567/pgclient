@@ -4,6 +4,7 @@ import QueryWindow from "./QueryWindow";
 import ResultsWindow from "./ResultsWindow";
 
 import { ExecuteQuery } from "../../wailsjs/go/main/App";
+import SplitPane, { Pane } from "split-pane-react";
 
 type MainWindowProps = {
   // runQuery: Function;
@@ -20,7 +21,11 @@ function MainWindow (props: MainWindowProps) {
     activeServer,
   } = props;
 
-  const [queryRes, setQueryRes] = useState<QueryResult>();
+  const [vSizes, setVSizes] = useState([
+    '50%' as unknown as number,
+    'auto'
+  ]);
+  const [queryRes, setQueryRes] = useState<QueryResult>({});
 
   const executeQuery = async (server: string, db: string, query: string) => {
     try {
@@ -33,18 +38,26 @@ function MainWindow (props: MainWindowProps) {
 
   return (
     <div id="main-window">
-      <QueryWindow
-        db={activeDb}
-        server={activeServer}
-        runQuery={executeQuery}
-      />
-      {
-        queryRes ?
+      <SplitPane
+        split='horizontal'
+        sizes={vSizes}
+        onChange={setVSizes}
+        sashRender={()=>null}
+      >
+        <Pane minSize={100}>
+          <QueryWindow
+            db={activeDb}
+            server={activeServer}
+            runQuery={executeQuery}
+          />
+        </Pane>
+        <Pane minSize={100}>
           <ResultsWindow
             data={queryRes.data}
             error={queryRes.error}
-          /> : null
-      }
+          />
+        </Pane>
+      </SplitPane>
     </div>
   )
 }

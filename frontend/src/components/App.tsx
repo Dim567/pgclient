@@ -7,8 +7,17 @@ import MainWindow from './MainWindow';
 import Sidebar from './Sidebar';
 
 import { GetConnectionsNames, InitConnections } from "../../wailsjs/go/main/App";
+import SplitPane, { Pane } from 'split-pane-react';
+import 'split-pane-react/esm/themes/default.css';
 
 function App() {
+  const [hSizes, setHSizes] = useState([300, 'auto']);
+  const layoutCSS = {
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  };
   const [activeDb, setActiveDb] = useState('');
   const [activeServer, setActiveServer] = useState('');
 
@@ -65,19 +74,28 @@ function App() {
 
   return (
     <div id="app">
-      <Sidebar>
-        <div
-          className='connection-settings-show'
-          onClick={() => setPopupVisibility(true)}
-        >
-          Create connection
-        </div>
-        {dbServers}
-      </Sidebar>
-      <MainWindow
-        activeDb={activeDb}
-        activeServer={activeServer}
-      />
+      <SplitPane
+        split='vertical'
+        sizes={hSizes}
+        onChange={setHSizes}
+        sashRender={()=>null}
+      >
+        <Pane minSize={300} maxSize='50%'>
+          <Sidebar>
+            <div
+              className='connection-settings-show'
+              onClick={() => setPopupVisibility(true)}
+            >
+              Create connection
+            </div>
+            {dbServers}
+          </Sidebar>
+        </Pane>
+        <MainWindow
+          activeDb={activeDb}
+          activeServer={activeServer}
+        />
+      </SplitPane>
       {
         popupVisible ?
           <ConnectionPopup
