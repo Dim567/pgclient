@@ -1,4 +1,4 @@
-module changeme
+module pgclient
 
 go 1.18
 
