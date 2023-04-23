@@ -1,14 +1,13 @@
 #app {
     height: 100vh;
     text-align: center;
-    display: flex;
 }
 
 #sidebar {
-    /* width: 300px; */
     height: 100%;
     overflow: auto;
     background-color: aqua;
+    white-space: nowrap;
 }
 
 #main-window {
@@ -33,17 +32,20 @@
     height: 100%;
     display: flex;
     color: white;
+    position: relative;
     overflow: auto;
 }
 
 .results-table-column {
-    flex-grow: 1;
+    flex-shrink: 0;
     border-color: black;
     border-style: solid;
     border-width: 1px;
+    max-width: 50%;
 }
 
 .results-table-cell {
+    white-space: nowrap;
     border-color: cyan;
     border-style: solid;
     border-width: 1px;

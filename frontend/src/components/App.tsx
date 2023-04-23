@@ -10,8 +10,10 @@ import { GetConnectionsNames, InitConnections } from "../../wailsjs/go/main/App"
 import SplitPane, { Pane } from 'split-pane-react';
 import 'split-pane-react/esm/themes/default.css';
 
+const DEFAULT_SIDEBAR_WIDTH = 300;
+
 function App() {
-  const [hSizes, setHSizes] = useState([300, 'auto']);
+  const [hSizes, setHSizes] = useState([DEFAULT_SIDEBAR_WIDTH, 'auto']);
   const layoutCSS = {
     height: '100%',
     display: 'flex',
@@ -80,7 +82,7 @@ function App() {
         onChange={setHSizes}
         sashRender={()=>null}
       >
-        <Pane minSize={300} maxSize='50%'>
+        <Pane minSize={100} maxSize='50%'>
           <Sidebar>
             <div
               className='connection-settings-show'

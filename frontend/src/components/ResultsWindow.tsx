@@ -22,7 +22,7 @@ function ResultsWindow (props: QueryResult) {
   for (let i = 0; i < columnsNumber; i++) {
     const column = [];
     for (let j = 0; j < rowsNumber; j++) {
-      console.log(data[j][i]);
+      // console.log(data[j][i]);//////////////////////
       const cell = <div className="results-table-cell" key={j}>{data[j][i]}</div>;
       column.push(cell);
     }
