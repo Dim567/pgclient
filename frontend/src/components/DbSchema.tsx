@@ -5,15 +5,15 @@ import { GetServerDbTables } from '../../wailsjs/go/main/App';
 function DbSchema(props: any) {
   const {
     dbName,
-    dbSchema,
-    dbServer,
+    schemaName,
+    serverName,
   } = props;
   const [tablesVisible, setTablesVisibility] = useState(false);
   const [dbTables, setTables] = useState<string[]>([]);
 
-  const showTables = async (dbSchema: string) => {
+  const showTables = async (schemaName: string) => {
     try {
-      const tableNames = await GetServerDbTables(dbServer, dbName, dbSchema);
+      const tableNames = await GetServerDbTables(serverName, dbName, schemaName);
       setTables(tableNames || []);
     } catch (err) {
       console.log('GOLANG ERROR: ', err)
@@ -22,7 +22,7 @@ function DbSchema(props: any) {
 
   useEffect(() => {
     if (tablesVisible) {
-      showTables(dbSchema);
+      showTables(schemaName);
     }
   }, [tablesVisible])
 
@@ -32,12 +32,19 @@ function DbSchema(props: any) {
 
   const tables = dbTables.map((table) => <DbTable key={table} name={table}/>)
   return (
-    <div>
+    <div className="sidebar-nested-block">
       <div
-        onClick={showHideTables}
         className='clickable'
-      >{dbSchema}</div>
-      {tablesVisible && tables}
+        onClick={() => {
+          showHideTables();
+        }}
+      >
+        {schemaName}
+      </div>
+      <div className="sidebar-nested-block">
+        {tablesVisible && <div>Tables</div> }
+        {tablesVisible && tables}
+      </div>
     </div>
   )
 }

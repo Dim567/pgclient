@@ -19,23 +19,16 @@ function DbServer (props: DbServerProps) {
   } = props;
 
   const [dbList, setDbList] = useState<string[]>([]);
-  const [showDatabases, setDbVisibility] = useState<boolean>(true);
-  const [serverConnected, setConnectionFlag] = useState<boolean>(false);
+  const [showDatabases, setDbVisibility] = useState(false);
 
   // TODO: prevent connect to already connected server???
   const connect = async () => {
     try {
       const dbNames = await GetServerDatabases(name);
-      setConnectionFlag(true);
       setDbList(dbNames);
+      setDbVisibility(true);
     } catch (err) {
       console.log('Backend error: ', err) // TODO: show error in output
-    }
-  }
-
-  const showHideDatabases = () => {
-    if (serverConnected) {
-      setDbVisibility((value) => !value)
     }
   }
 
@@ -44,18 +37,19 @@ function DbServer (props: DbServerProps) {
       key={dbName}
       name={dbName}
       dbServer={name}
-      active={dbName === /*activeDb*/'fvv' ? true : false}
+      isDbActive={dbName === /*activeDb*/'fvv' ? true : false}
       activateDb={setActiveDb}
     />
   ));
 
   return (
-    <div className="server-name" onClick={() => setActiveServer(name)}>
-      {name}
-      <button className="btn" onClick={() => connect()}>Connect</button>
-      <div>{databases}</div>
-      <button className="btn" onClick={showHideDatabases}>ShowDatabases</button>
-      <button className="btn" onClick={() =>showConnectionSettings(name)}>ShowConnectionSettings</button>
+    <div className="server sidebar-nested-block" onClick={() => setActiveServer(name)}>
+      <div className="clickable" onClick={() => connect()}>{name}</div>
+      <div className="sidebar-nested-block">
+        {showDatabases && <div>Databases</div>}
+        {databases}
+      </div>
+      <button className="btn" onClick={() => showConnectionSettings(name)}>ShowConnectionSettings</button>
     </div>
   )
 }

@@ -5,7 +5,7 @@ import { GetServerDbSchemas } from '../../wailsjs/go/main/App';
 type DbProps = {
   name: string;
   dbServer: string;
-  active: boolean;
+  isDbActive: boolean;
   activateDb: Function;
 }
 
@@ -13,9 +13,11 @@ function Db(props: DbProps) {
   const {
     name,
     dbServer,
-    active,
+    // isDbActive, //TODO: move this to parent component
     activateDb,
   } = props;
+
+  const [isDbActive, setActiveDb] = useState(false);
   const [visible, setVisibility] = useState(false);
   const [dbSchemas, setSchemas] = useState<string[]>([]);
 
@@ -34,21 +36,19 @@ function Db(props: DbProps) {
     }
   }, [visible])
 
-  const activateCurrentDb = () => {
-    setVisibility((visible) =>!visible);
-    activateDb(name);
-  }
-
   const schemas = dbSchemas.map((schema) =>
-    <DbSchema key={schema} dbSchema={schema} dbName={name} dbServer={dbServer}/>
+    <DbSchema key={schema} schemaName={schema} dbName={name} serverName={dbServer}/>
   )
   return (
-    <div>
+    <div className="sidebar-nested-block">
       <div
-        onClick={activateCurrentDb}
+        onClick={() => {setVisibility((visible) =>!visible);}}
         className="clickable"
       >{name}</div>
-      {visible && schemas}
+      <div className="sidebar-nested-block">
+        {visible && <div>Schemas</div>}
+        {visible && schemas}
+      </div>
     </div>
   )
 }
