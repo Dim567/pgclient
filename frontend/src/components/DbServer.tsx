@@ -8,11 +8,9 @@ function DbServer (props: DbServerProps) {
   const {
     name,
     selected, // if true => all queries in query editor run for this server
-    // activeDb,
     // dbNames,
     // connect,
     // activeDb,
-    // activateDb,
     setActiveDb,
     setActiveServer,
     showConnectionSettings,
@@ -39,6 +37,7 @@ function DbServer (props: DbServerProps) {
       dbServer={name}
       isDbActive={dbName === /*activeDb*/'fvv' ? true : false}
       activateDb={setActiveDb}
+      activateServer={setActiveServer} // This is necessary because we may click on other server db while active server is different (chosen another server in the list)
     />
   ));
 

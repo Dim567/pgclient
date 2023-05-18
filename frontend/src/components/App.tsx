@@ -62,11 +62,9 @@ function App() {
     const server = {
       name,
       selected: name === activeServer,
-      // activeDb,
       // dbNames,
       // connect,
-      // activeDb,
-      // activateDb,
+      activeDb,
       setActiveDb,
       setActiveServer,
       showConnectionSettings,

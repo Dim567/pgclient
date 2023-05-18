@@ -30,7 +30,8 @@ function MainWindow (props: MainWindowProps) {
   const executeQuery = async (server: string, db: string, query: string) => {
     try {
       const data = await ExecuteQuery(server, db, query);
-      setQueryRes({ data });
+      const timestamp = Date.now();
+      setQueryRes({ data, timestamp });
     } catch (err) {
       setQueryRes({ error: err as string })
     }
@@ -55,6 +56,7 @@ function MainWindow (props: MainWindowProps) {
           <ResultsWindow
             data={queryRes.data}
             error={queryRes.error}
+            timestamp={queryRes.timestamp}
           />
         </Pane>
       </SplitPane>

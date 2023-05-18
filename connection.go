@@ -99,7 +99,7 @@ func (server *DbServer) getDbConnection(dbName string) (*pgxpool.Pool, error) {
 	}
 
 	if _, ok := server.databases[dbName]; !ok {
-		return nil, fmt.Errorf("no such db")
+		return nil, fmt.Errorf("Database '%s' does not exist on the server '%s'", dbName, server.name)
 	}
 
 	if server.databases[dbName].connPool != nil {

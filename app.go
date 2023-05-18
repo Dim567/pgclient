@@ -205,8 +205,7 @@ func (app *App) GetServerDbSchemas(serverName, dbName string) ([]string, error) 
 }
 
 func (app *App) ExecuteQuery(serverName, dbName, query string) ([][]string, error) {
-	dbServer := app.dbServers[serverName] // TODO: check for server existance
-	fmt.Println(dbServer)
+	dbServer := app.dbServers[serverName] // TODO: check for server existance, also serverName should not be ''
 	data, err := dbServer.ExecuteQuery(dbName, query)
 	if err != nil {
 		return nil, err

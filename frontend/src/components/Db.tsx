@@ -7,17 +7,17 @@ type DbProps = {
   dbServer: string;
   isDbActive: boolean;
   activateDb: Function;
+  activateServer: Function;
 }
 
 function Db(props: DbProps) {
   const {
     name,
     dbServer,
-    // isDbActive, //TODO: move this to parent component
     activateDb,
+    activateServer,
   } = props;
 
-  const [isDbActive, setActiveDb] = useState(false);
   const [visible, setVisibility] = useState(false);
   const [dbSchemas, setSchemas] = useState<string[]>([]);
 
@@ -37,12 +37,21 @@ function Db(props: DbProps) {
   }, [visible])
 
   const schemas = dbSchemas.map((schema) =>
-    <DbSchema key={schema} schemaName={schema} dbName={name} serverName={dbServer}/>
+    <DbSchema
+      key={schema}
+      schemaName={schema}
+      dbName={name}
+      serverName={dbServer}
+    />
   )
   return (
     <div className="sidebar-nested-block">
       <div
-        onClick={() => {setVisibility((visible) =>!visible);}}
+        onClick={() => {
+          activateDb(name);
+          activateServer(dbServer);
+          setVisibility((visible) =>!visible);
+        }}
         className="clickable"
       >{name}</div>
       <div className="sidebar-nested-block">
