@@ -9,17 +9,12 @@ import Sidebar from './Sidebar';
 import { GetConnectionsNames, InitConnections } from "../../wailsjs/go/main/App";
 import SplitPane, { Pane } from 'split-pane-react';
 import 'split-pane-react/esm/themes/default.css';
+import PopupWindow from './PopupWindow';
 
 const DEFAULT_SIDEBAR_WIDTH = 300;
 
 function App() {
   const [hSizes, setHSizes] = useState([DEFAULT_SIDEBAR_WIDTH, 'auto']);
-  const layoutCSS = {
-    height: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
-  };
   const [activeDb, setActiveDb] = useState('');
   const [activeServer, setActiveServer] = useState('');
 
@@ -98,11 +93,15 @@ function App() {
       </SplitPane>
       {
         popupVisible ?
-          <ConnectionPopup
-            connId={connId}
+          <PopupWindow
             close={() => setPopupVisibility(false)}
-            setActiveServer={setActiveServer}
-          /> : null
+            title="Connection" // TODO: should be dynamically changed
+          >
+            <ConnectionPopup
+              connId={connId}
+              setActiveServer={setActiveServer}
+            />
+          </PopupWindow> : null
       }
     </div>
   )

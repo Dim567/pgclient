@@ -79,54 +79,40 @@ function ConnectionPopup (props: any) {
   }
 
   return (
-    <div id="connection-popup">
-      <div className="connection-popup-background"></div>
-      <div className="connection-popup-inner-window">
-        {/* HEADER */}
-        <div className="connection-header">
-          <div
-            className="connection-close"
-            onClick={close}
-          >
-            X
-          </div>
-          Connection
-        </div>
-        {/* INPUTS */}
-        <div>
-          <label htmlFor="connection">Connection name: </label>
-          <input id="connection" className="input" onChange={updateConnectionName} autoComplete="off" name="host" type="text" defaultValue={connectionName}/>
-        </div>
+    <div>
+      <div>
+        <label htmlFor="connection">Connection name: </label>
+        <input id="connection" className="input" onChange={updateConnectionName} autoComplete="off" name="host" type="text" defaultValue={connectionName}/>
+      </div>
 
-        <div>
-          <label htmlFor="host">Host: </label>
-          <input id="host" className="input" onChange={updateHost} autoComplete="off" name="host" type="text" defaultValue={host}/>
-        </div>
+      <div>
+        <label htmlFor="host">Host: </label>
+        <input id="host" className="input" onChange={updateHost} autoComplete="off" name="host" type="text" defaultValue={host}/>
+      </div>
 
-        <div>
-          <label htmlFor="port">Port: </label>
-          <input id="port" className="input" onChange={updatePort} autoComplete="off" name="port" type="text" defaultValue={port}/>
-        </div>
+      <div>
+        <label htmlFor="port">Port: </label>
+        <input id="port" className="input" onChange={updatePort} autoComplete="off" name="port" type="text" defaultValue={port}/>
+      </div>
 
-        <div>
-          <label htmlFor="user">User name: </label>
-          <input id="user" className="input" onChange={updateUserName} autoComplete="off" name="user" type="text" defaultValue={userName}/>
-        </div>
+      <div>
+        <label htmlFor="user">User name: </label>
+        <input id="user" className="input" onChange={updateUserName} autoComplete="off" name="user" type="text" defaultValue={userName}/>
+      </div>
 
-        <div>
-          <label htmlFor="password">Password: </label>
-          <input id="password" className="input" onChange={updatePassword} autoComplete="off" name="password" type="text" defaultValue={password}/>
-        </div>
+      <div>
+        <label htmlFor="password">Password: </label>
+        <input id="password" className="input" onChange={updatePassword} autoComplete="off" name="password" type="text" defaultValue={password}/>
+      </div>
 
-        <div>
-          <button className="btn" onClick={pingConnection}>Ping</button>
-          {pingIndicator}
-        </div>
+      <div>
+        <button className="btn" onClick={pingConnection}>Ping</button>
+        {pingIndicator}
+      </div>
 
-        <div>
-          <button className="btn" onClick={saveConnectionSettings}>Save</button>
-          {saveIndicator}
-        </div>
+      <div>
+        <button className="btn" onClick={saveConnectionSettings}>Save</button>
+        {saveIndicator}
       </div>
     </div>
   );
