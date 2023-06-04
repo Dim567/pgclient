@@ -7,6 +7,9 @@ function DbSchema(props: any) {
     dbName,
     schemaName,
     serverName,
+    showTableStructure,
+    setActiveSchema,
+    setActiveTable,
   } = props;
   const [tablesVisible, setTablesVisibility] = useState(false);
   const [dbTables, setTables] = useState<string[]>([]);
@@ -30,7 +33,16 @@ function DbSchema(props: any) {
     setTablesVisibility((tablesVisible) =>!tablesVisible);
   }
 
-  const tables = dbTables.map((table) => <DbTable key={table} name={table}/>)
+  const tables = dbTables.map((table) => (
+    <DbTable
+      key={table}
+      name={table}
+      schemaName={schemaName}
+      showStructure={showTableStructure}
+      setActiveSchema={setActiveSchema}
+      setActiveTable={setActiveTable}
+    />)
+  );
   return (
     <div className="sidebar-nested-block">
       <div

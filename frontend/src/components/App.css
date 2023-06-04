@@ -93,7 +93,8 @@ height: 100%;
 }
 
 .db-table {
-  background-color:rgb(164, 107, 107)
+  background-color:rgb(164, 107, 107);
+  cursor: pointer;
 }
 
 .result {

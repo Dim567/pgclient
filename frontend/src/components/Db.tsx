@@ -8,6 +8,9 @@ type DbProps = {
   isDbActive: boolean;
   activateDb: Function;
   activateServer: Function;
+  showTableStructure: Function;
+  setActiveSchema: Function,
+  setActiveTable: Function,
 }
 
 function Db(props: DbProps) {
@@ -16,6 +19,9 @@ function Db(props: DbProps) {
     dbServer,
     activateDb,
     activateServer,
+    showTableStructure,
+    setActiveSchema,
+    setActiveTable,
   } = props;
 
   const [visible, setVisibility] = useState(false);
@@ -42,6 +48,9 @@ function Db(props: DbProps) {
       schemaName={schema}
       dbName={name}
       serverName={dbServer}
+      showTableStructure={showTableStructure}
+      setActiveSchema={setActiveSchema}
+      setActiveTable={setActiveTable}
     />
   )
   return (

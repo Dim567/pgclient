@@ -1,4 +1,4 @@
-function PopupWindow (props: any) {
+function ModalContainer (props: any) {
   const {
     children,
     close,
@@ -28,5 +28,4 @@ function PopupWindow (props: any) {
   );
 }
 
-// TODO: move header wrapper and body wrapper here
-export default PopupWindow;
+export default ModalContainer;

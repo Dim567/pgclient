@@ -13,7 +13,10 @@ function DbServer (props: DbServerProps) {
     // activeDb,
     setActiveDb,
     setActiveServer,
+    setActiveSchema,
+    setActiveTable,
     showConnectionSettings,
+    showTableStructure,
   } = props;
 
   const [dbList, setDbList] = useState<string[]>([]);
@@ -38,6 +41,9 @@ function DbServer (props: DbServerProps) {
       isDbActive={dbName === /*activeDb*/'fvv' ? true : false}
       activateDb={setActiveDb}
       activateServer={setActiveServer} // This is necessary because we may click on other server db while active server is different (chosen another server in the list)
+      showTableStructure={showTableStructure}
+      setActiveSchema={setActiveSchema}
+      setActiveTable={setActiveTable}
     />
   ));
 

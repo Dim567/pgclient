@@ -8,9 +8,8 @@ export interface DbServerProps {
   // activateDb: Function;
   setActiveDb: Function;
   setActiveServer: Function;
+  setActiveSchema: Function,
+  setActiveTable: Function,
   showConnectionSettings: Function;
+  showTableStructure: Function;
 }
-
-// export interface SidebarProps {
-//   dbServers: DbServerProps[],
-// }

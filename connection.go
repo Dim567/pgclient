@@ -216,7 +216,7 @@ func (server *DbServer) GetDbSchemas(dbName string) ([]string, error) {
 }
 
 // TODO: add data about foreign, primary keys, NULL, default values ...
-func (server *DbServer) DescribeTable(dbName, tableName string) ([]any, error) {
+func (server *DbServer) DescribeTable(dbName, schemaName, tableName string) ([]any, error) {
 	connPool, err := server.getDbConnection(dbName)
 	if err != nil {
 		return nil, err
@@ -225,9 +225,15 @@ func (server *DbServer) DescribeTable(dbName, tableName string) ([]any, error) {
 		server.ctx,
 		`SELECT
 			column_name,
-			data_type
+			data_type,
+			column_default,
+			is_nullable,
+			character_maximum_length,
+			numeric_precision,
+			datetime_precision
 		FROM information_schema.columns
-		WHERE table_name = $1;`,
+		WHERE table_schema = $1 AND table_name = $2;`,
+		schemaName,
 		tableName,
 	)
 

@@ -1,27 +1,37 @@
 import { useEffect, useState } from 'react';
+import SplitPane, { Pane } from 'split-pane-react';
 
+import 'split-pane-react/esm/themes/default.css';
 import './App.css';
-import ConnectionPopup from './ConnectionPopup';
+
 import DbServer from './DbServer';
 import MainWindow from './MainWindow';
+import ServerConnectionSettings from './ServerConnectionSettingsModal';
 import Sidebar from './Sidebar';
 
 import { GetConnectionsNames, InitConnections } from "../../wailsjs/go/main/App";
-import SplitPane, { Pane } from 'split-pane-react';
-import 'split-pane-react/esm/themes/default.css';
-import PopupWindow from './PopupWindow';
+import TableStructureModal from './TableStructureModal';
 
 const DEFAULT_SIDEBAR_WIDTH = 300;
 
+enum ModalTypeEnum {
+  SERVER_CONNECTION_SETTINGS = 'server_connection_settings',
+  TABLE_CELL_DATA = 'table_cell_data',
+  TABLE_STRUCTURE = 'table_structure',
+  NONE = 'none',
+}
+
 function App() {
   const [hSizes, setHSizes] = useState([DEFAULT_SIDEBAR_WIDTH, 'auto']);
+  const [activeServer, setActiveServer] = useState(''); // TODO: it's the same as setActiveServer, needs to be refactored
   const [activeDb, setActiveDb] = useState('');
-  const [activeServer, setActiveServer] = useState('');
+  const [activeSchema, setActiveSchema] = useState('');
+  const [activeTable, setActiveTable] = useState('');
 
-  const [popupVisible, setPopupVisibility] = useState(false);
+  const [modalType, setModalType] = useState(ModalTypeEnum.NONE);
 
   const [connNames, setConnNames] = useState<string[]>([]);
-  const [connId, setConnId] = useState<string>();
+  // const [connId, setActiveServer] = useState<string>();
 
   useEffect(() => {
     const initConnections = async () => {
@@ -49,8 +59,12 @@ function App() {
   }, [activeServer]);
 
   const showConnectionSettings = (connName: string) => {
-    setConnId(connName);
-    setPopupVisibility(true);
+    setActiveServer(connName);
+    setModalType(ModalTypeEnum.SERVER_CONNECTION_SETTINGS);
+  }
+
+  const showTableStructure = () => {
+    setModalType(ModalTypeEnum.TABLE_STRUCTURE);
   }
 
   const dbServers = connNames.map((name) => {
@@ -62,10 +76,40 @@ function App() {
       activeDb,
       setActiveDb,
       setActiveServer,
+      setActiveSchema,
+      setActiveTable,
       showConnectionSettings,
+      showTableStructure,
     }
     return (<DbServer key={name} {...server} />)
   });
+
+  const modalWindow = (modalType: ModalTypeEnum) => {
+    switch (modalType) {
+      case ModalTypeEnum.SERVER_CONNECTION_SETTINGS:
+        return (
+          <ServerConnectionSettings
+            serverName={activeServer}
+            close={() => setModalType(ModalTypeEnum.NONE)}
+            setActiveServer={setActiveServer}
+          />
+        );
+      case ModalTypeEnum.TABLE_STRUCTURE:
+        return (
+          <TableStructureModal
+            serverName={activeServer}
+            dbName={activeDb}
+            close={() => setModalType(ModalTypeEnum.NONE)}
+            tableName={activeTable}
+            schemaName={activeSchema}
+          />
+        );
+      case ModalTypeEnum.TABLE_CELL_DATA:
+        return null; // temporary
+      default:
+        return null;
+    }
+  }
 
   return (
     <div id="app">
@@ -79,7 +123,10 @@ function App() {
           <Sidebar>
             <div
               className='connection-settings-show'
-              onClick={() => setPopupVisibility(true)}
+              onClick={() => {
+                setActiveServer('');
+                setModalType(ModalTypeEnum.SERVER_CONNECTION_SETTINGS);
+              }}
             >
               Create connection
             </div>
@@ -91,20 +138,9 @@ function App() {
           activeServer={activeServer}
         />
       </SplitPane>
-      {
-        popupVisible ?
-          <PopupWindow
-            close={() => setPopupVisibility(false)}
-            title="Connection" // TODO: should be dynamically changed
-          >
-            <ConnectionPopup
-              connId={connId}
-              setActiveServer={setActiveServer}
-            />
-          </PopupWindow> : null
-      }
+      {modalWindow(modalType)}
     </div>
   )
 }
 
-export default App
+export default App;

@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { GetConnectionSettings, PingConnection, SaveConnectionSettings, SetDbServer } from "../../wailsjs/go/main/App";
+import ModalContainer from "./ModalContainer";
 
-function ConnectionPopup (props: any) {
+function ServerConnectionSettingsModal (props: any) {
   const {
     close,
-    connId,
+    serverName,
     setActiveServer,
   } = props;
 
@@ -26,14 +27,14 @@ function ConnectionPopup (props: any) {
   useEffect(() => {
     const fetchConnSettings = async () => {
       try {
-        if (connId) {
+        if (serverName) {
           const {
             Name,
             Host,
             Port,
             User,
             Password,
-          } = await GetConnectionSettings(connId);
+          } = await GetConnectionSettings(serverName);
 
           setConnectionName(Name);
           setHost(Host);
@@ -79,7 +80,10 @@ function ConnectionPopup (props: any) {
   }
 
   return (
-    <div>
+    <ModalContainer
+      close={close}
+      title="Server connection settings"
+    >
       <div>
         <label htmlFor="connection">Connection name: </label>
         <input id="connection" className="input" onChange={updateConnectionName} autoComplete="off" name="host" type="text" defaultValue={connectionName}/>
@@ -114,8 +118,8 @@ function ConnectionPopup (props: any) {
         <button className="btn" onClick={saveConnectionSettings}>Save</button>
         {saveIndicator}
       </div>
-    </div>
+    </ModalContainer>
   );
 }
 
-export default ConnectionPopup;
+export default ServerConnectionSettingsModal;

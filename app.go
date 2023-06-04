@@ -213,3 +213,13 @@ func (app *App) ExecuteQuery(serverName, dbName, query string) ([][]string, erro
 
 	return data, nil
 }
+
+func (app *App) GetTableStructure(serverName, dbName, schemaName, tableName string) ([]any, error) {
+	dbServer := app.dbServers[serverName]
+	data, err := dbServer.DescribeTable(dbName, schemaName, tableName)
+	if err != nil {
+		return nil, err
+	}
+
+	return data, nil
+}
