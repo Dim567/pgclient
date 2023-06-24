@@ -1,7 +1,11 @@
+import SettingsIcon from '@mui/icons-material/Settings';
+import KeyIcon from '@mui/icons-material/Key';
+
 function DbTable(props: any) {
   const {
     name,
     showStructure,
+    showTableKeys,
     setActiveSchema,
     setActiveTable,
     schemaName,
@@ -10,12 +14,24 @@ function DbTable(props: any) {
   return (
     <div
       className="db-table sidebar-nested-block"
-      onClick={() => {
+      // onClick={() => {
+      //   setActiveSchema(schemaName);
+      //   setActiveTable(name);
+      //   showStructure();
+      // }}
+    >
+      {name}
+      <SettingsIcon onClick={() => {
         setActiveSchema(schemaName);
         setActiveTable(name);
         showStructure();
-      }}
-    >{name}</div>
+      }}/>
+      <KeyIcon onClick={() => {
+        setActiveSchema(schemaName);
+        setActiveTable(name);
+        showTableKeys();
+      }}/>
+    </div>
   );
 }
 

@@ -215,7 +215,6 @@ func (server *DbServer) GetDbSchemas(dbName string) ([]string, error) {
 	return schemas, nil
 }
 
-// TODO: add data about foreign, primary keys, NULL, default values ...
 func (server *DbServer) DescribeTable(dbName, schemaName, tableName string) ([]any, error) {
 	connPool, err := server.getDbConnection(dbName)
 	if err != nil {
@@ -225,6 +224,7 @@ func (server *DbServer) DescribeTable(dbName, schemaName, tableName string) ([]a
 		server.ctx,
 		`SELECT
 			column_name,
+			udt_name,
 			data_type,
 			column_default,
 			is_nullable,
@@ -246,8 +246,72 @@ func (server *DbServer) DescribeTable(dbName, schemaName, tableName string) ([]a
 
 	var res []any
 
+	var columnNames []string
+	for _, fieldDescription := range description.FieldDescriptions() {
+		columnNames = append(columnNames, fieldDescription.Name)
+	}
+
+	res = append(res, columnNames)
+
 	for description.Next() {
 		values, err := description.Values()
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Rows scan failed: %v\n", err)
+			return nil, err
+		}
+		res = append(res, values)
+	}
+
+	return res, nil
+}
+
+func (server *DbServer) GetTableKeys(dbName, schemaName, tableName string) ([]any, error) {
+	connPool, err := server.getDbConnection(dbName)
+	if err != nil {
+		return nil, err
+	}
+
+	tableKeys, err := connPool.Query(
+		server.ctx,
+		`SELECT
+			tc.table_schema,
+			tc.constraint_name,
+			tc.table_name,
+			kcu.column_name,
+			ccu.table_schema AS foreign_table_schema,
+			ccu.table_name AS foreign_table_name,
+			ccu.column_name AS foreign_column_name
+		FROM
+			information_schema.table_constraints AS tc
+			JOIN information_schema.key_column_usage AS kcu
+				ON tc.constraint_name = kcu.constraint_name
+				AND tc.table_schema = kcu.table_schema
+			JOIN information_schema.constraint_column_usage AS ccu
+				ON ccu.constraint_name = tc.constraint_name
+				AND ccu.table_schema = tc.table_schema
+		WHERE (tc.constraint_type = 'FOREIGN KEY' OR tc.constraint_type = 'PRIMARY KEY') AND tc.table_schema=$1 AND tc.table_name=$2;`,
+		schemaName,
+		tableName,
+	)
+
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Query failed: %v\n", err)
+		return nil, err
+	}
+
+	defer tableKeys.Close()
+
+	var res []any
+
+	var columnNames []string
+	for _, fieldDescription := range tableKeys.FieldDescriptions() {
+		columnNames = append(columnNames, fieldDescription.Name)
+	}
+
+	res = append(res, columnNames)
+
+	for tableKeys.Next() {
+		values, err := tableKeys.Values()
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Rows scan failed: %v\n", err)
 			return nil, err

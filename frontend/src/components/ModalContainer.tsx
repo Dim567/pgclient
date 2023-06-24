@@ -4,23 +4,24 @@ function ModalContainer (props: any) {
     close,
     title,
   } = props;
+
   return (
-    <div className="popup-container">
-      <div className="popup-container__background"/>
+    <div className="modal-container">
+      <div className="modal-container__background"/>
       {/* CONTENT */}
-      <div className="popup-content">
+      <div className="modal-content">
         {/* HEADER */}
-        <div className="popup-content__header">
-          <div className="popup-content__title">
+        <div className="modal-content__header">
+          <div className="modal-content__title">
             {title}
           </div>
           <div
-            className="popup-content__close-button"
+            className="modal-content__close-button"
             onClick={close}
           >X</div>
         </div>
         {/* BODY */}
-        <div className="popup-content__body">
+        <div className="modal-content__body">
           {children}
         </div>
       </div>

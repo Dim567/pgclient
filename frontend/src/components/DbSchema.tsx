@@ -8,6 +8,7 @@ function DbSchema(props: any) {
     schemaName,
     serverName,
     showTableStructure,
+    showTableKeys,
     setActiveSchema,
     setActiveTable,
   } = props;
@@ -39,6 +40,7 @@ function DbSchema(props: any) {
       name={table}
       schemaName={schemaName}
       showStructure={showTableStructure}
+      showTableKeys={showTableKeys}
       setActiveSchema={setActiveSchema}
       setActiveTable={setActiveTable}
     />)

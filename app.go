@@ -223,3 +223,13 @@ func (app *App) GetTableStructure(serverName, dbName, schemaName, tableName stri
 
 	return data, nil
 }
+
+func (app *App) GetTableKeys(serverName, dbName, schemaName, tableName string) ([]any, error) {
+	dbServer := app.dbServers[serverName]
+	data, err := dbServer.GetTableKeys(dbName, schemaName, tableName)
+	if err != nil {
+		return nil, err
+	}
+
+	return data, nil
+}

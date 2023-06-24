@@ -12,4 +12,5 @@ export interface DbServerProps {
   setActiveTable: Function,
   showConnectionSettings: Function;
   showTableStructure: Function;
+  showTableKeys: Function;
 }

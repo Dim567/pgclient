@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import ModalContainer from './ModalContainer';
-import { GetTableStructure } from '../../wailsjs/go/main/App';
+import { GetTableKeys } from '../../wailsjs/go/main/App';
 
-function TableStructureModal (props: any) {
+function TableKeysModal (props: any) {
   const {
     close,
     tableName,
@@ -11,41 +11,41 @@ function TableStructureModal (props: any) {
     schemaName,
   } = props;
 
-  const [tableStructure, setTableStructure] = useState<string[][]>();
+  const [tableKeys, setTableKeys] = useState<string[][]>();
 
   useEffect(() => {
-    const fetchTableStructure = async (
+    const fetchTableKeys = async (
       serverName: string,
       dbName: string,
       schemaName: string,
       tableName: string,
     )  => {
       try {
-        const data = await GetTableStructure(serverName, dbName, schemaName, tableName);
-        setTableStructure(data);
+        const data = await GetTableKeys(serverName, dbName, schemaName, tableName);
+        setTableKeys(data);
       } catch (err) {
         console.log(err);
       }
     }
 
-    fetchTableStructure(serverName, dbName, schemaName, tableName);
+    fetchTableKeys(serverName, dbName, schemaName, tableName);
   }, [serverName, dbName, schemaName, tableName]);
 
   let table = null;
 
-  if (tableStructure?.length && tableStructure[0].length) {
+  if (tableKeys?.length && tableKeys[0].length) {
     const tableHeader = (
       <tr key="tableHeader">
-        {tableStructure[0].map((colName) => (<th key={colName}>{colName}</th>))}
+        {tableKeys[0].map((colName) => (<th key={colName}>{colName}</th>))}
       </tr>
     );
 
     const tableRows = [];
-    for (let i = 1; i < tableStructure.length; i++) {
+    for (let i = 1; i < tableKeys.length; i++) {
       const rowKey = 'tableRow-' + i;
       tableRows.push(
         <tr key={rowKey}>
-          {tableStructure[i].map((colValue, j) => (<td key={rowKey+':'+j}>{colValue}</td>))}
+          {tableKeys[i].map((colValue, j) => (<td key={rowKey+':'+j}>{colValue}</td>))}
         </tr>
       );
     }
@@ -65,7 +65,7 @@ function TableStructureModal (props: any) {
   return (
     <ModalContainer
       close={close}
-      title={`'${tableName}' table structure`}
+      title={`'${tableName}' table keys`}
     >
       <div className='table-data-structure'>
         {table}
@@ -74,4 +74,4 @@ function TableStructureModal (props: any) {
   );
 }
 
-export default TableStructureModal;
+export default TableKeysModal;

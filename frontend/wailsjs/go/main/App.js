@@ -26,6 +26,10 @@ export function GetServerDbTables(arg1, arg2, arg3) {
   return window['go']['main']['App']['GetServerDbTables'](arg1, arg2, arg3);
 }
 
+export function GetTableKeys(arg1, arg2, arg3, arg4) {
+  return window['go']['main']['App']['GetTableKeys'](arg1, arg2, arg3, arg4);
+}
+
 export function GetTableStructure(arg1, arg2, arg3, arg4) {
   return window['go']['main']['App']['GetTableStructure'](arg1, arg2, arg3, arg4);
 }

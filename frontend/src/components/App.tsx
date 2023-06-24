@@ -11,6 +11,7 @@ import Sidebar from './Sidebar';
 
 import { GetConnectionsNames, InitConnections } from "../../wailsjs/go/main/App";
 import TableStructureModal from './TableStructureModal';
+import TableKeysModal from './TableKeysModal';
 
 const DEFAULT_SIDEBAR_WIDTH = 300;
 
@@ -18,6 +19,7 @@ enum ModalTypeEnum {
   SERVER_CONNECTION_SETTINGS = 'server_connection_settings',
   TABLE_CELL_DATA = 'table_cell_data',
   TABLE_STRUCTURE = 'table_structure',
+  TABLE_KEYS = 'table_keys',
   NONE = 'none',
 }
 
@@ -67,6 +69,10 @@ function App() {
     setModalType(ModalTypeEnum.TABLE_STRUCTURE);
   }
 
+  const showTableKeys = () => {
+    setModalType(ModalTypeEnum.TABLE_KEYS);
+  }
+
   const dbServers = connNames.map((name) => {
     const server = {
       name,
@@ -80,6 +86,7 @@ function App() {
       setActiveTable,
       showConnectionSettings,
       showTableStructure,
+      showTableKeys,
     }
     return (<DbServer key={name} {...server} />)
   });
@@ -97,6 +104,16 @@ function App() {
       case ModalTypeEnum.TABLE_STRUCTURE:
         return (
           <TableStructureModal
+            serverName={activeServer}
+            dbName={activeDb}
+            close={() => setModalType(ModalTypeEnum.NONE)}
+            tableName={activeTable}
+            schemaName={activeSchema}
+          />
+        );
+      case ModalTypeEnum.TABLE_KEYS:
+        return (
+          <TableKeysModal
             serverName={activeServer}
             dbName={activeDb}
             close={() => setModalType(ModalTypeEnum.NONE)}
