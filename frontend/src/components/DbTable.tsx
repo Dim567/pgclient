@@ -14,21 +14,16 @@ function DbTable(props: any) {
   return (
     <div
       className="db-table sidebar-nested-block"
-      // onClick={() => {
-      //   setActiveSchema(schemaName);
-      //   setActiveTable(name);
-      //   showStructure();
-      // }}
+      onClick={() => {
+        setActiveSchema(schemaName);
+        setActiveTable(name);
+      }}
     >
       {name}
       <SettingsIcon onClick={() => {
-        setActiveSchema(schemaName);
-        setActiveTable(name);
         showStructure();
       }}/>
       <KeyIcon onClick={() => {
-        setActiveSchema(schemaName);
-        setActiveTable(name);
         showTableKeys();
       }}/>
     </div>

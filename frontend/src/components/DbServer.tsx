@@ -1,3 +1,4 @@
+import SettingsIcon from '@mui/icons-material/Settings';
 import { useState } from "react";
 import { DbServerProps } from "../interfaces";
 import Db from "./Db";
@@ -51,12 +52,16 @@ function DbServer (props: DbServerProps) {
 
   return (
     <div className="server sidebar-nested-block" onClick={() => setActiveServer(name)}>
-      <div className="clickable" onClick={() => connect()}>{name}</div>
+      <div className="clickable" onClick={() => connect()}>
+        {name}
+        <SettingsIcon onClick={() => {
+          showConnectionSettings(name);
+        }}/>
+      </div>
       <div className="sidebar-nested-block">
         {showDatabases && <div>Databases</div>}
         {databases}
       </div>
-      <button className="btn" onClick={() => showConnectionSettings(name)}>ShowConnectionSettings</button>
     </div>
   )
 }
