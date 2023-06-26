@@ -1,3 +1,5 @@
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useEffect, useState } from 'react';
 import DbSchema from './DbSchema';
 import { GetServerDbSchemas } from '../../wailsjs/go/main/App';
@@ -65,7 +67,10 @@ function Db(props: DbProps) {
           setVisibility((visible) =>!visible);
         }}
         className="clickable"
-      >{name}</div>
+      >
+        {name}
+        { visible ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+      </div>
       <div className="sidebar-nested-block">
         {visible && <div>Schemas</div>}
         {visible && schemas}

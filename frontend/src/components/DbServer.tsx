@@ -1,4 +1,7 @@
 import SettingsIcon from '@mui/icons-material/Settings';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useState } from "react";
 import { DbServerProps } from "../interfaces";
 import Db from "./Db";
@@ -22,20 +25,19 @@ function DbServer (props: DbServerProps) {
   } = props;
 
   const [dbList, setDbList] = useState<string[]>([]);
-  const [showDatabases, setDbVisibility] = useState(false);
+  const [ dbVisible, setDbVisibility] = useState(false);
 
   // TODO: prevent connect to already connected server???
   const connect = async () => {
     try {
       const dbNames = await GetServerDatabases(name);
       setDbList(dbNames);
-      setDbVisibility(true);
     } catch (err) {
       console.log('Backend error: ', err) // TODO: show error in output
     }
   }
 
-  const databases = showDatabases && dbList.map((dbName) => (
+  const databases =  dbVisible && dbList.map((dbName) => (
     <Db
       key={dbName}
       name={dbName}
@@ -52,14 +54,27 @@ function DbServer (props: DbServerProps) {
 
   return (
     <div className="server sidebar-nested-block" onClick={() => setActiveServer(name)}>
-      <div className="clickable" onClick={() => connect()}>
+      <div className="clickable" onClick={() => {
+        if (!dbVisible) { connect(); }
+        setDbVisibility((dbVisible) => !dbVisible);
+      }}>
         {name}
-        <SettingsIcon onClick={() => {
-          showConnectionSettings(name);
-        }}/>
+        {  dbVisible ? <ExpandLessIcon fontSize='small'/> : <ExpandMoreIcon fontSize='small'/>}
+        <SettingsIcon
+          onClick={(e) => {
+            e.stopPropagation();
+            e.nativeEvent.stopImmediatePropagation();
+            showConnectionSettings(name);
+          }}
+          fontSize='small'
+        />
+        <DeleteForeverIcon
+          onClick={() => { console.log('item will be deleted') }} // TODO: provide golang method for the deleting
+          fontSize='small'
+        />
       </div>
       <div className="sidebar-nested-block">
-        {showDatabases && <div>Databases</div>}
+        { dbVisible && <div>Databases</div>}
         {databases}
       </div>
     </div>

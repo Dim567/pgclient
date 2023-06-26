@@ -1,3 +1,5 @@
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useEffect, useState } from 'react';
 import DbTable from './DbTable';
 import { GetServerDbTables } from '../../wailsjs/go/main/App';
@@ -54,10 +56,11 @@ function DbSchema(props: any) {
         }}
       >
         {schemaName}
+        { tablesVisible ? <ExpandLessIcon /> : <ExpandMoreIcon />}
       </div>
       <div className="sidebar-nested-block">
-        {tablesVisible && <div>Tables</div> }
-        {tablesVisible && tables}
+        { tablesVisible && <div>Tables</div> }
+        { tablesVisible && tables}
       </div>
     </div>
   )

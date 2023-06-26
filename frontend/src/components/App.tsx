@@ -1,3 +1,4 @@
+import AddIcon from '@mui/icons-material/Add';
 import { useEffect, useState } from 'react';
 import SplitPane, { Pane } from 'split-pane-react';
 
@@ -145,9 +146,12 @@ function App() {
                 setModalType(ModalTypeEnum.SERVER_CONNECTION_SETTINGS);
               }}
             >
-              Create connection
+              Create server connection <AddIcon />
             </div>
-            {dbServers}
+            <div className='server sidebar-nested-block'>
+              Db servers
+              {dbServers}
+            </div>
           </Sidebar>
         </Pane>
         <MainWindow
