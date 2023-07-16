@@ -370,3 +370,9 @@ func (server *DbServer) ExecuteQuery(dbName, query string) ([][]string, error) {
 
 	return data, nil
 }
+
+func (server *DbServer) CloseConnections() {
+	for _, dbConnection := range server.databases {
+		dbConnection.connPool.Close()
+	}
+}

@@ -6,7 +6,7 @@ import { useState } from "react";
 import { DbServerProps } from "../interfaces";
 import Db from "./Db";
 
-import { GetServerDatabases } from "../../wailsjs/go/main/App";
+import { GetServerDatabases, DeleteServer } from "../../wailsjs/go/main/App";
 
 function DbServer (props: DbServerProps) {
   const {
@@ -34,6 +34,16 @@ function DbServer (props: DbServerProps) {
       setDbList(dbNames);
     } catch (err) {
       console.log('Backend error: ', err) // TODO: show error in output
+    }
+  }
+
+  const deleteServer = async () => {
+    try {
+      await DeleteServer(name);
+      // TODO: activate one of the existing servers if any, after deleting this one
+      setActiveServer(`${Date.now()}-fake`);
+    } catch (err) {
+      console.log('Backend error: ', err)
     }
   }
 
@@ -69,7 +79,11 @@ function DbServer (props: DbServerProps) {
           fontSize='small'
         />
         <DeleteForeverIcon
-          onClick={() => { console.log('item will be deleted') }} // TODO: provide golang method for the deleting
+          onClick={(e) => {
+            e.stopPropagation();
+            e.nativeEvent.stopImmediatePropagation();
+            deleteServer();
+          }}
           fontSize='small'
         />
       </div>

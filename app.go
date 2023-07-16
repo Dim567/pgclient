@@ -23,6 +23,8 @@ func NewApp() *App {
 	return &App{}
 }
 
+const CREDENTIALS_DIR = "connections"
+
 // startup is called when the app starts. The context is saved
 // so we can call the runtime methods
 func (app *App) startup(ctx context.Context) {
@@ -84,7 +86,7 @@ func (app *App) SaveConnectionSettings(name, host, port, user, password string) 
 		return err
 	}
 
-	dirName := "connections"
+	dirName := CREDENTIALS_DIR
 	fileName := name + ".conn"
 	err = os.MkdirAll(dirName, fs.ModePerm)
 	if err != nil {
@@ -101,7 +103,7 @@ func (app *App) SaveConnectionSettings(name, host, port, user, password string) 
 
 func (app *App) getExistingConnections() []ConnectionSettings {
 	// read files from disk and fill in respective structures
-	dirName := "connections"
+	dirName := CREDENTIALS_DIR
 	stat, err := os.Stat(dirName)
 	if err != nil && os.IsNotExist(err) {
 		return nil
@@ -232,4 +234,25 @@ func (app *App) GetTableKeys(serverName, dbName, schemaName, tableName string) (
 	}
 
 	return data, nil
+}
+
+func (app *App) DeleteServer(serverName string) error {
+	dbServer, ok := app.dbServers[serverName]
+	if !ok {
+		return fmt.Errorf("%s server does not exist", serverName)
+	}
+
+	dbServer.CloseConnections()
+	delete(app.dbServers, serverName)
+
+	// delete database server creds from disk
+	dirName := CREDENTIALS_DIR
+	fileName := serverName + ".conn"
+	filePath := filepath.Join(dirName, fileName)
+
+	if os.Remove(filePath) != nil {
+		return fmt.Errorf("no creds file for the server %s", serverName)
+	}
+
+	return nil
 }

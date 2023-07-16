@@ -1,3 +1,8 @@
+* {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
 #app {
   height: 100vh;
   text-align: center;
@@ -72,6 +77,14 @@ height: 100%;
   background-color: aquamarine;
 }
 
+.modal-content__body_table {
+  border-spacing: 0;
+}
+
+.modal-content__body_table-head {
+  background-color: grey;
+}
+
 .modal-content__close-button {
   cursor: pointer;
   position: absolute;
@@ -81,6 +94,7 @@ height: 100%;
   width: 2rem;
   background-color: red;
 }
+
 
 .connection-settings-show {
   cursor: pointer;
@@ -190,7 +204,7 @@ height: 100%;
 .resizer {
   display: block;
   background: blue;
-  width: 4px;
+  width: 5px;
   height: 100%;
   position: absolute;
   right: 0;

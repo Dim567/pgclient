@@ -51,8 +51,8 @@ function TableKeysModal (props: any) {
     }
 
     table = (
-      <table>
-        <thead>
+      <table className='modal-content__body_table'>
+        <thead className='modal-content__body_table-head'>
           {tableHeader}
         </thead>
         <tbody>

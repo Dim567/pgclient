@@ -26,7 +26,7 @@ enum ModalTypeEnum {
 
 function App() {
   const [hSizes, setHSizes] = useState([DEFAULT_SIDEBAR_WIDTH, 'auto']);
-  const [activeServer, setActiveServer] = useState(''); // TODO: it's the same as setActiveServer, needs to be refactored
+  const [activeServer, setActiveServer] = useState('');
   const [activeDb, setActiveDb] = useState('');
   const [activeSchema, setActiveSchema] = useState('');
   const [activeTable, setActiveTable] = useState('');
@@ -34,7 +34,6 @@ function App() {
   const [modalType, setModalType] = useState(ModalTypeEnum.NONE);
 
   const [connNames, setConnNames] = useState<string[]>([]);
-  // const [connId, setActiveServer] = useState<string>();
 
   useEffect(() => {
     const initConnections = async () => {
