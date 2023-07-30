@@ -50,12 +50,13 @@ function ServerConnectionSettingsModal (props: any) {
     fetchConnSettings();
   }, []);
 
-  const pingIndicator = pingStatus && <span>{pingStatus}</span>;
-  const saveIndicator = saveStatus && <span>{saveStatus}</span>;
+  const pingIndicator = pingStatus &&
+    <span className={pingStatus==='Success' ? 'success' : 'failure'}>{pingStatus}</span>;
+  const saveIndicator = saveStatus &&
+    <span className={saveStatus==='Success' ? 'success' : 'failure'}>{saveStatus}</span>;
 
   const pingConnection = async () => {
     try {
-      // await Connect('localhost', '5432', 'dbclient', 'dbclient');
       await PingConnection(host, port, userName, password)
       setPingStatus('Success')
     } catch (err) {
@@ -84,39 +85,45 @@ function ServerConnectionSettingsModal (props: any) {
       close={close}
       title="Server connection settings"
     >
-      <div>
-        <label htmlFor="connection">Connection name: </label>
-        <input id="connection" className="input" onChange={updateConnectionName} autoComplete="off" name="host" type="text" defaultValue={connectionName}/>
-      </div>
+      <div className="connection-settings__pane">
+        <div className="connection-settings__pane-input-line">
+          <div className="connection-settings__pane-labels">Connection name:</div>
+          <input id="connection" className="input" onChange={updateConnectionName} autoComplete="off" name="host" type="text" defaultValue={connectionName}/>
+        </div>
 
-      <div>
-        <label htmlFor="host">Host: </label>
-        <input id="host" className="input" onChange={updateHost} autoComplete="off" name="host" type="text" defaultValue={host}/>
-      </div>
+        <div className="connection-settings__pane-input-line">
+          <div className="connection-settings__pane-labels">Host:</div>
+          <input id="host" className="input" onChange={updateHost} autoComplete="off" name="host" type="text" defaultValue={host}/>
+        </div>
 
-      <div>
-        <label htmlFor="port">Port: </label>
-        <input id="port" className="input" onChange={updatePort} autoComplete="off" name="port" type="text" defaultValue={port}/>
-      </div>
+        <div className="connection-settings__pane-input-line">
+          <div className="connection-settings__pane-labels">Port:</div>
+          <input id="port" className="input" onChange={updatePort} autoComplete="off" name="port" type="text" defaultValue={port}/>
+        </div>
 
-      <div>
-        <label htmlFor="user">User name: </label>
-        <input id="user" className="input" onChange={updateUserName} autoComplete="off" name="user" type="text" defaultValue={userName}/>
-      </div>
+        <div className="connection-settings__pane-input-line">
+          <div className="connection-settings__pane-labels">User name:</div>
+          <input id="user" className="input" onChange={updateUserName} autoComplete="off" name="user" type="text" defaultValue={userName}/>
+        </div>
 
-      <div>
-        <label htmlFor="password">Password: </label>
-        <input id="password" className="input" onChange={updatePassword} autoComplete="off" name="password" type="text" defaultValue={password}/>
-      </div>
+        <div className="connection-settings__pane-input-line">
+          <div className="connection-settings__pane-labels">Password:</div>
+          <input id="password" className="input" onChange={updatePassword} autoComplete="off" name="password" type="text" defaultValue={password}/>
+        </div>
 
-      <div>
-        <button className="btn" onClick={pingConnection}>Ping</button>
-        {pingIndicator}
-      </div>
+        <div className="connection-settings__pane-input-line">
+          <div className="connection-settings__pane-labels">
+            <button className="btn" onClick={pingConnection}>Ping</button>
+          </div>
+          {pingIndicator}
+        </div>
 
-      <div>
-        <button className="btn" onClick={saveConnectionSettings}>Save</button>
-        {saveIndicator}
+        <div className="connection-settings__pane-input-line">
+          <div className="connection-settings__pane-labels">
+            <button className="btn" onClick={saveConnectionSettings}>Save</button>
+          </div>
+          {saveIndicator}
+        </div>
       </div>
     </ModalContainer>
   );

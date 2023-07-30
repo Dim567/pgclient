@@ -59,7 +59,7 @@ height: 100%;
   transform: translateY(-50%);
   width: 500px;
   height: 500px;
-  background-color: aquamarine;
+  background-color: grey;
 }
 
 .modal-content__header {
@@ -75,7 +75,6 @@ height: 100%;
   height: 100%;
   width: 100%;
   overflow: auto;
-  background-color: aquamarine;
 }
 
 .modal-content__body_table {
@@ -96,6 +95,31 @@ height: 100%;
   background-color: red;
 }
 
+.connection-settings__pane {
+  padding: 20px;
+}
+
+.connection-settings__pane-input-line {
+  display: flex;
+  padding-bottom: 20px;
+}
+
+.connection-settings__pane-labels {
+  width: 40%;
+  text-align: left;
+}
+
+.success {
+  color: #04FF04;
+  font-size: 14pt;
+  font-weight: bold;
+}
+
+.failure {
+  color: red;
+  font-size: 14pt;
+  font-weight: bold;
+}
 
 .connection-settings-show {
   cursor: pointer;
