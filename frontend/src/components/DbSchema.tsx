@@ -11,6 +11,8 @@ function DbSchema(props: any) {
     serverName,
     showTableStructure,
     showTableKeys,
+    setActiveServer,
+    setActiveDb,
     setActiveSchema,
     setActiveTable,
   } = props;
@@ -43,6 +45,8 @@ function DbSchema(props: any) {
       schemaName={schemaName}
       showStructure={showTableStructure}
       showTableKeys={showTableKeys}
+      setActiveServer={setActiveServer}
+      setActiveDb={setActiveDb}
       setActiveSchema={setActiveSchema}
       setActiveTable={setActiveTable}
     />)
@@ -52,6 +56,8 @@ function DbSchema(props: any) {
       <div
         className='clickable'
         onClick={() => {
+          setActiveServer();
+          setActiveDb();
           showHideTables();
         }}
       >

@@ -11,8 +11,9 @@
 #sidebar {
   height: 100%;
   overflow: auto;
-  background-color: aqua;
+  background-color: grey;
   white-space: nowrap;
+  border-right: 5px solid blue;
 }
 
 #main-window {

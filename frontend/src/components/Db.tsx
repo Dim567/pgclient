@@ -1,3 +1,4 @@
+import CircleIcon from '@mui/icons-material/Circle';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useEffect, useState } from 'react';
@@ -20,6 +21,7 @@ function Db(props: DbProps) {
   const {
     name,
     dbServer,
+    isDbActive,
     activateDb,
     activateServer,
     showTableStructure,
@@ -54,6 +56,8 @@ function Db(props: DbProps) {
       serverName={dbServer}
       showTableStructure={showTableStructure}
       showTableKeys={showTableKeys}
+      setActiveServer={() => activateServer(dbServer)}
+      setActiveDb={() => activateDb(name)}
       setActiveSchema={setActiveSchema}
       setActiveTable={setActiveTable}
     />
@@ -68,6 +72,10 @@ function Db(props: DbProps) {
         }}
         className="clickable"
       >
+        <CircleIcon
+          fontSize='small'
+          htmlColor={isDbActive ? '#04FF04' : 'white'}
+        />
         {name}
         { visible ? <ExpandLessIcon /> : <ExpandMoreIcon />}
       </div>

@@ -4,7 +4,7 @@ export interface DbServerProps {
   selected: boolean;
   // dbNames: string[];
   // connect: Function;
-  // activeDb: string;
+  activeDb: string;
   // activateDb: Function;
   setActiveDb: Function;
   setActiveServer: Function;

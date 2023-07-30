@@ -6,6 +6,8 @@ function DbTable(props: any) {
     name,
     showStructure,
     showTableKeys,
+    setActiveServer,
+    setActiveDb,
     setActiveSchema,
     setActiveTable,
     schemaName,
@@ -15,6 +17,8 @@ function DbTable(props: any) {
     <div
       className="db-table sidebar-nested-block"
       onClick={() => {
+        setActiveServer();
+        setActiveDb();
         setActiveSchema(schemaName);
         setActiveTable(name);
       }}

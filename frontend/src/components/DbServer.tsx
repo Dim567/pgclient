@@ -1,4 +1,5 @@
 import SettingsIcon from '@mui/icons-material/Settings';
+import CircleIcon from '@mui/icons-material/Circle';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -14,7 +15,7 @@ function DbServer (props: DbServerProps) {
     selected, // if true => all queries in query editor run for this server
     // dbNames,
     // connect,
-    // activeDb,
+    activeDb,
     setActiveDb,
     setActiveServer,
     setActiveSchema,
@@ -52,7 +53,7 @@ function DbServer (props: DbServerProps) {
       key={dbName}
       name={dbName}
       dbServer={name}
-      isDbActive={dbName === /*activeDb*/'fvv' ? true : false}
+      isDbActive={dbName === activeDb ? true : false}
       activateDb={setActiveDb}
       activateServer={setActiveServer} // This is necessary because we may click on other server db while active server is different (chosen another server in the list)
       showTableStructure={showTableStructure}
@@ -63,11 +64,19 @@ function DbServer (props: DbServerProps) {
   ));
 
   return (
-    <div className="server sidebar-nested-block" onClick={() => setActiveServer(name)}>
+    <div className="server sidebar-nested-block">
       <div className="clickable" onClick={() => {
         if (!dbVisible) { connect(); }
+        setActiveServer(name);
+        setActiveDb('');
+        setActiveSchema('');
+        setActiveTable('')
         setDbVisibility((dbVisible) => !dbVisible);
       }}>
+        <CircleIcon
+          fontSize='small'
+          htmlColor={selected ? '#04FF04' : 'white'}
+        />
         {name}
         {  dbVisible ? <ExpandLessIcon fontSize='small'/> : <ExpandMoreIcon fontSize='small'/>}
         <SettingsIcon
