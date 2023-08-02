@@ -66,6 +66,7 @@ function TableKeysModal (props: any) {
     <ModalContainer
       close={close}
       title={`'${tableName}' table keys`}
+      modalType="responsive"
     >
       <div className='table-data-structure'>
         {table}

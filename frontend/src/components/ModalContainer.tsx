@@ -3,13 +3,14 @@ function ModalContainer (props: any) {
     children,
     close,
     title,
+    modalType,
   } = props;
 
   return (
     <div className="modal-container">
       <div className="modal-container__background"/>
       {/* CONTENT */}
-      <div className="modal-content">
+      <div className={modalType === "responsive" ? "modal-content-responsive" : "modal-content"}>
         {/* HEADER */}
         <div className="modal-content__header">
           <div className="modal-content__title">

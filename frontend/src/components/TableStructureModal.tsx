@@ -64,6 +64,7 @@ function TableStructureModal (props: any) {
 
   return (
     <ModalContainer
+      modalType="responsive"
       close={close}
       title={`'${tableName}' table structure`}
     >

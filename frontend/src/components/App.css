@@ -62,6 +62,16 @@ height: 100%;
   background-color: grey;
 }
 
+.modal-content-responsive {
+  position: relative;
+  top: 50%;
+  margin: auto;
+  transform: translateY(-50%);
+  width: 50%;
+  height: 50%;
+  background-color: grey;
+}
+
 .modal-content__header {
   height: 2rem;
   background-color: #333333;
@@ -72,7 +82,7 @@ height: 100%;
 }
 
 .modal-content__body {
-  height: 100%;
+  height: calc(100% - 2rem);
   width: 100%;
   overflow: auto;
 }
@@ -247,9 +257,11 @@ height: 100%;
 .table-data-structure td {
   padding: 5px;
   border: 1px solid blue;
+  background-color: white;
 }
 
 .table-data-structure th {
   padding: 5px;
   border: 1px solid blue;
+  background-color: #BBBBBB;
 }
