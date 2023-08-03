@@ -30,6 +30,7 @@ function MainWindow (props: MainWindowProps) {
   const executeQuery = async (server: string, db: string, query: string) => {
     try {
       const data = await ExecuteQuery(server, db, query);
+      // TODO: add methods for deleting database, transactions, ...
       const timestamp = Date.now();
       setQueryRes({ data, timestamp });
     } catch (err) {

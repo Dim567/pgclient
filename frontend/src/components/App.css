@@ -22,16 +22,31 @@ height: 100%;
 
 #query-window {
   height: 100%;
-  background-color: pink;
+}
+
+#query-handlers-bar {
+  position: absolute;
+  height: 1.5rem;
+  width: 100%;
+  z-index: 1;
+  background-color: #04FF04;
 }
 
 #query-area {
-  padding: 5px;
+  top: 1.5rem;
+  position: relative;
+  height: calc(100% - 1.5rem);
 }
 
 #query-input {
+  position: absolute;
+  padding: 10px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   box-sizing: border-box;
-  width: 100%;
+  resize: none;
 }
 
 .modal-container {
@@ -264,4 +279,8 @@ height: 100%;
   padding: 5px;
   border: 1px solid blue;
   background-color: #BBBBBB;
+}
+
+.execute-query-btn {
+  cursor: pointer;
 }
