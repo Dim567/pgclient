@@ -106,7 +106,7 @@ func (server *DbServer) getDbConnection(dbName string) (*pgxpool.Pool, error) {
 		return server.databases[dbName].connPool, nil
 	}
 
-	// this doesn't return error if credentials wrong for some reason( need to investigate)
+	// this doesn't return error if credentials wrong for some reason (need to investigate)
 	// seems like actual connection happens only when we make a query request
 	dbConnPool, err := pgxpool.New(
 		server.ctx,
@@ -132,7 +132,8 @@ func (server *DbServer) GetDbTables(dbName, schemaName string) ([]string, error)
 	if err != nil {
 		return nil, err
 	}
-	// rows, err := connPool.Query(
+
+	// rows1, err1 := connPool.Query(
 	// 	server.ctx,
 	// 	`SELECT * FROM pg_catalog.pg_tables
 	// 	WHERE schemaname != 'pg_catalog'
@@ -145,7 +146,7 @@ func (server *DbServer) GetDbTables(dbName, schemaName string) ([]string, error)
 		server.ctx,
 		`SELECT * FROM pg_catalog.pg_tables
 		WHERE tableowner = $1 AND schemaname = $2;`,
-		dbName,
+		server.settings.User,
 		schemaName,
 	)
 
@@ -188,7 +189,7 @@ func (server *DbServer) GetDbSchemas(dbName string) ([]string, error) {
 	rows, err := connPool.Query(
 		server.ctx,
 		`SELECT schema_name FROM information_schema.schemata
-		WHERE schema_name NOT IN  ('information_schema', 'pg_catalog', 'pg_toast');`,
+		WHERE schema_name NOT IN ('information_schema', 'pg_catalog', 'pg_toast');`,
 	)
 
 	if err != nil {

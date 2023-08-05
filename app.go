@@ -163,7 +163,7 @@ func (app *App) GetConnectionsNames() []string {
 func (app *App) GetServerDatabases(serverName string) ([]string, error) {
 	dbServer := app.dbServers[serverName]
 	if dbServer == nil {
-		return nil, fmt.Errorf("connection with name " + serverName + "doe not exist")
+		return nil, fmt.Errorf("server '%s' does not exist", serverName)
 	}
 
 	err := dbServer.SetDatabases(
@@ -207,7 +207,23 @@ func (app *App) GetServerDbSchemas(serverName, dbName string) ([]string, error) 
 }
 
 func (app *App) ExecuteQuery(serverName, dbName, query string) ([][]string, error) {
-	dbServer := app.dbServers[serverName] // TODO: check for server existance, also serverName should not be ''
+	if len(serverName) == 0 {
+		return nil, fmt.Errorf("server name must be non empty string")
+	}
+
+	if len(dbName) == 0 {
+		return nil, fmt.Errorf("db name must be non empty string")
+	}
+
+	if len(query) == 0 {
+		return nil, fmt.Errorf("query must be non empty string")
+	}
+
+	dbServer, ok := app.dbServers[serverName]
+	if !ok {
+		return nil, fmt.Errorf("server '%s' does not exist", serverName)
+	}
+
 	data, err := dbServer.ExecuteQuery(dbName, query)
 	if err != nil {
 		return nil, err
