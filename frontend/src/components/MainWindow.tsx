@@ -53,7 +53,7 @@ function MainWindow (props: MainWindowProps) {
             runQuery={executeQuery}
           />
         </Pane>
-        <Pane minSize={100}>
+        <Pane className="results-window-pane" minSize={100}>
           <ResultsWindow
             data={queryRes.data}
             error={queryRes.error}

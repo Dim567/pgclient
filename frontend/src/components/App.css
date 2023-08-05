@@ -225,11 +225,15 @@ height: 100%;
   cursor: pointer;
 }
 
+.results-window-pane {
+  background-color: #BBBBBB;
+  color: #8B0000;
+}
+
 .table-wrapper {
   height: 100%;
   color: white;
   overflow: auto;
-  background-color:#BBBBBB;
 }
 .table {
   display: block;
