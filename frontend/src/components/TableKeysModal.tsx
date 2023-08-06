@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import ModalContainer from './ModalContainer';
 import { GetTableKeys } from '../../wailsjs/go/main/App';
+import Loader from './Loader';
 
 function TableKeysModal (props: any) {
   const {
@@ -12,6 +13,7 @@ function TableKeysModal (props: any) {
   } = props;
 
   const [tableKeys, setTableKeys] = useState<string[][]>();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchTableKeys = async (
@@ -21,9 +23,12 @@ function TableKeysModal (props: any) {
       tableName: string,
     )  => {
       try {
+        setLoading(true);
         const data = await GetTableKeys(serverName, dbName, schemaName, tableName);
         setTableKeys(data);
+        setLoading(false);
       } catch (err) {
+        setLoading(false);
         console.log(err);
       }
     }
@@ -68,9 +73,12 @@ function TableKeysModal (props: any) {
       title={`'${tableName}' table keys`}
       modalType="responsive"
     >
-      <div className='table-data-structure'>
-        {table}
-      </div>
+      {
+        loading ? <Loader /> :
+          <div className='table-data-structure'>
+            {table}
+          </div>
+      }
     </ModalContainer>
   );
 }

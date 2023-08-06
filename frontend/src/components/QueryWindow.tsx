@@ -10,7 +10,7 @@ function QueryWindow (props: QueryWindowProps) {
   const {
     db,
     server,
-    runQuery
+    runQuery,
   } = props;
 
   const [query, setQuery] = useState("");

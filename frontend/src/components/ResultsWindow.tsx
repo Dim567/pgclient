@@ -1,16 +1,26 @@
 import React from "react";
-import { QueryResult } from "../types";
 import { ColumnWithStrictAccessor, useBlockLayout, useResizeColumns, useTable } from "react-table";
+import Loader from "./Loader";
+import { QueryResult } from "../types";
 
 // TODO: need to change @types/react-table package to proper version
 // TODO: make sticky header
 
-function ResultsWindow (props: QueryResult) {
+function ResultsWindow (props: { queryRes: QueryResult, loading: boolean }) {
+  const {
+    queryRes,
+    loading,
+  } = props;
+
+  if (loading) {
+    return <Loader type='large' />
+  }
+
   const {
     data,
     error,
     timestamp,
-  } = props;
+  } = queryRes;
 
   if (error) {
     return <div>Request failed.<br/>{error}</div>

@@ -26,15 +26,19 @@ function MainWindow (props: MainWindowProps) {
     'auto'
   ]);
   const [queryRes, setQueryRes] = useState<QueryResult>({});
+  const [loading, setLoading] = useState(false);
 
   const executeQuery = async (server: string, db: string, query: string) => {
     try {
+      setLoading(true);
       const data = await ExecuteQuery(server, db, query);
       // TODO: add methods for deleting database, transactions, ...
       const timestamp = Date.now();
       setQueryRes({ data, timestamp });
+      setLoading(false);
     } catch (err) {
-      setQueryRes({ error: err as string })
+      setQueryRes({ error: err as string });
+      setLoading(false);
     }
   }
 
@@ -55,9 +59,8 @@ function MainWindow (props: MainWindowProps) {
         </Pane>
         <Pane className="results-window-pane" minSize={100}>
           <ResultsWindow
-            data={queryRes.data}
-            error={queryRes.error}
-            timestamp={queryRes.timestamp}
+            queryRes={queryRes}
+            loading={loading}
           />
         </Pane>
       </SplitPane>

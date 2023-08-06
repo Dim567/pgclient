@@ -8,6 +8,7 @@ import { DbServerProps } from "../interfaces";
 import Db from "./Db";
 
 import { GetServerDatabases, DeleteServer } from "../../wailsjs/go/main/App";
+import Loader from './Loader';
 
 function DbServer (props: DbServerProps) {
   const {
@@ -27,13 +28,17 @@ function DbServer (props: DbServerProps) {
 
   const [dbList, setDbList] = useState<string[]>([]);
   const [ dbVisible, setDbVisibility] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // TODO: prevent connect to already connected server???
   const connect = async () => {
     try {
+      setLoading(true);
       const dbNames = await GetServerDatabases(name);
       setDbList(dbNames);
+      setLoading(false);
     } catch (err) {
+      setLoading(false);
       console.log('Backend error: ', err) // TODO: show error in output
     }
   }
@@ -78,7 +83,7 @@ function DbServer (props: DbServerProps) {
           htmlColor={selected ? '#04FF04' : 'white'}
         />
         {name}
-        {  dbVisible ? <ExpandLessIcon fontSize='small'/> : <ExpandMoreIcon fontSize='small'/>}
+        {  dbVisible ? <ExpandLessIcon fontSize='small'/> : <ExpandMoreIcon fontSize='small'/> }
         <SettingsIcon
           onClick={(e) => {
             e.stopPropagation();
@@ -98,7 +103,7 @@ function DbServer (props: DbServerProps) {
       </div>
       <div className="sidebar-nested-block">
         { dbVisible && <div>Databases</div>}
-        {databases}
+        { loading ? <Loader type='medium'/> : databases }
       </div>
     </div>
   )

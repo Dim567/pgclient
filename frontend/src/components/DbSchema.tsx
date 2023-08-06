@@ -3,6 +3,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useEffect, useState } from 'react';
 import DbTable from './DbTable';
 import { GetServerDbTables } from '../../wailsjs/go/main/App';
+import Loader from './Loader';
 
 function DbSchema(props: any) {
   const {
@@ -18,12 +19,16 @@ function DbSchema(props: any) {
   } = props;
   const [tablesVisible, setTablesVisibility] = useState(false);
   const [dbTables, setTables] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const showTables = async (schemaName: string) => {
     try {
+      setLoading(true);
       const tableNames = await GetServerDbTables(serverName, dbName, schemaName);
       setTables(tableNames || []);
+      setLoading(false);
     } catch (err) {
+      setLoading(false);
       console.log('GOLANG ERROR: ', err)
     }
   }
@@ -66,7 +71,7 @@ function DbSchema(props: any) {
       </div>
       <div className="sidebar-nested-block">
         { tablesVisible && <div>Tables</div> }
-        { tablesVisible && tables}
+        { tablesVisible && (loading ? <Loader type='small'/> : tables) }
       </div>
     </div>
   )

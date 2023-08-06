@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import ModalContainer from './ModalContainer';
 import { GetTableStructure } from '../../wailsjs/go/main/App';
+import Loader from './Loader';
 
 function TableStructureModal (props: any) {
   const {
@@ -12,6 +13,7 @@ function TableStructureModal (props: any) {
   } = props;
 
   const [tableStructure, setTableStructure] = useState<string[][]>();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchTableStructure = async (
@@ -21,9 +23,12 @@ function TableStructureModal (props: any) {
       tableName: string,
     )  => {
       try {
+        setLoading(true);
         const data = await GetTableStructure(serverName, dbName, schemaName, tableName);
         setTableStructure(data);
+        setLoading(false);
       } catch (err) {
+        setLoading(false);
         console.log(err);
       }
     }
@@ -68,9 +73,12 @@ function TableStructureModal (props: any) {
       close={close}
       title={`'${tableName}' table structure`}
     >
-      <div className='table-data-structure'>
-        {table}
-      </div>
+      {
+        loading ? <Loader /> :
+          <div className='table-data-structure'>
+            {table}
+          </div>
+      }
     </ModalContainer>
   );
 }

@@ -13,6 +13,7 @@ import Sidebar from './Sidebar';
 import { GetConnectionsNames, InitConnections } from "../../wailsjs/go/main/App";
 import TableStructureModal from './TableStructureModal';
 import TableKeysModal from './TableKeysModal';
+import Loader from './Loader';
 
 const DEFAULT_SIDEBAR_WIDTH = 300;
 
@@ -147,7 +148,7 @@ function App() {
             </div>
             <div className='server sidebar-nested-block'>
               Db servers
-              {dbServers}
+              { dbServers }
             </div>
           </Sidebar>
         </Pane>
