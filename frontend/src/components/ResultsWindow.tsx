@@ -6,7 +6,11 @@ import { QueryResult } from "../types";
 // TODO: need to change @types/react-table package to proper version
 // TODO: make sticky header
 
-function ResultsWindow (props: { queryRes: QueryResult, loading: boolean, showCellValue: Function }) {
+function ResultsWindow (props: {
+  queryRes: QueryResult,
+  loading: boolean,
+  showCellValue: Function,
+}) {
   const {
     queryRes,
     loading,
@@ -18,7 +22,7 @@ function ResultsWindow (props: { queryRes: QueryResult, loading: boolean, showCe
   }
 
   const {
-    data,
+    data: requestData,
     error,
     timestamp,
   } = queryRes;
@@ -27,12 +31,19 @@ function ResultsWindow (props: { queryRes: QueryResult, loading: boolean, showCe
     return <div>Request failed.<br/>{error}</div>
   }
 
-  if (!data || !data[0]) { // TODO: check this (remove message on start)
-    return <div>Request finished successfully</div>;
+  const { RequestType, Data, SuccessMessage } = requestData || {};
+
+  // After start of the application but before query is sent,
+  if (!RequestType) {
+    return <div>Please execute query</div>;
   }
 
-  const rowsNumber = data.length;
-  const columnsNumber = data[0].length;
+  if (!Data || !Data[0]) {
+    return <div>{SuccessMessage}</div>;
+  }
+
+  const rowsNumber = Data.length;
+  const columnsNumber = Data[0].length;
 
   const dataMemo = React.useMemo(
     () => {
@@ -41,7 +52,7 @@ function ResultsWindow (props: { queryRes: QueryResult, loading: boolean, showCe
 
       for (let i = 0; i < columnsNumber; i++) {
         columns.push({
-          Header: data[0][i],
+          Header: Data[0][i],
           accessor: `col${i}`,
         });
       }
@@ -50,7 +61,7 @@ function ResultsWindow (props: { queryRes: QueryResult, loading: boolean, showCe
         const rowData: Record<string, string> = {};
         for (let j = 0; j < columnsNumber; j++) {
           const key = columns[j].accessor;
-          rowData[key] = data[i][j];
+          rowData[key] = Data[i][j];
         }
         tableData.push(rowData);
       }
@@ -65,7 +76,7 @@ function ResultsWindow (props: { queryRes: QueryResult, loading: boolean, showCe
       const columns: Record<string, string>[] = [];
       for (let i = 0; i < columnsNumber; i++) {
         columns.push({
-          Header: data[0][i],
+          Header: Data[0][i],
           accessor: `col${i}`,
         });
       }

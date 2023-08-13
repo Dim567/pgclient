@@ -206,7 +206,7 @@ func (app *App) GetServerDbSchemas(serverName, dbName string) ([]string, error) 
 	return schemas, nil
 }
 
-func (app *App) ExecuteQuery(serverName, dbName, query string) ([][]string, error) {
+func (app *App) ExecuteQuery(serverName, dbName, query string) (*QueryResult, error) {
 	if len(serverName) == 0 {
 		return nil, fmt.Errorf("server name must be non empty string")
 	}
@@ -224,12 +224,12 @@ func (app *App) ExecuteQuery(serverName, dbName, query string) ([][]string, erro
 		return nil, fmt.Errorf("server '%s' does not exist", serverName)
 	}
 
-	data, err := dbServer.ExecuteQuery(dbName, query)
+	res, err := dbServer.ExecuteQuery(dbName, query)
 	if err != nil {
 		return nil, err
 	}
 
-	return data, nil
+	return res, nil
 }
 
 func (app *App) GetTableStructure(serverName, dbName, schemaName, tableName string) ([]any, error) {

@@ -4,7 +4,7 @@ import {main} from '../models';
 
 export function DeleteServer(arg1:string):Promise<void>;
 
-export function ExecuteQuery(arg1:string,arg2:string,arg3:string):Promise<Array<any>>;
+export function ExecuteQuery(arg1:string,arg2:string,arg3:string):Promise<any>;
 
 export function GetConnectionSettings(arg1:string):Promise<main.ConnectionSettings>;
 

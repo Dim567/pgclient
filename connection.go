@@ -33,6 +33,12 @@ type DbConnection struct {
 	connPool *pgxpool.Pool
 }
 
+type QueryResult struct {
+	Data           [][]string
+	RequestType    string
+	SuccessMessage string
+}
+
 func NewDbServer(ctx context.Context, name, host, port, user, password string) *DbServer {
 	connectionSettings := ConnectionSettings{
 		name,
@@ -133,15 +139,6 @@ func (server *DbServer) GetDbTables(dbName, schemaName string) ([]string, error)
 	if err != nil {
 		return nil, err
 	}
-
-	// rows1, err1 := connPool.Query(
-	// 	server.ctx,
-	// 	`SELECT * FROM pg_catalog.pg_tables
-	// 	WHERE schemaname != 'pg_catalog'
-	// 		AND schemaname != 'information_schema'
-	// 		AND tableowner = $1`,
-	// 	dbName,
-	// )
 
 	rows, err := connPool.Query(
 		server.ctx,
@@ -324,7 +321,7 @@ func (server *DbServer) GetTableKeys(dbName, schemaName, tableName string) ([]an
 	return res, nil
 }
 
-func (server *DbServer) ExecuteQuery(dbName, query string) ([][]string, error) {
+func (server *DbServer) ExecuteQuery(dbName, query string) (*QueryResult, error) {
 	if len(dbName) == 0 {
 		return nil, fmt.Errorf("db for the query is not specified")
 	}
@@ -357,18 +354,15 @@ func (server *DbServer) ExecuteQuery(dbName, query string) ([][]string, error) {
 			requestType = "Update"
 		}
 
-		// TODO: refactor to return differend data types
-		fmt.Printf("%s request finished successfully\n", requestType)
+		// TODO: refactor to return different data types
 		var data [][]string
-		return data, nil
+		result := QueryResult{
+			Data:           data,
+			RequestType:    requestType,
+			SuccessMessage: fmt.Sprintf("%s request finished successfully", requestType),
+		}
+		return &result, nil
 	}
-
-	// TODO: insert/update/delete/select/transactions (parse incoming query)
-	// ct, err := connPool.Exec(server.ctx, query)
-	// if err != nil {
-	// 	fmt.Fprintf(os.Stderr, "Query failed: %v\n", err)
-	// 	return nil, err
-	// }
 
 	rows, err := connPool.Query(
 		server.ctx,
@@ -403,7 +397,13 @@ func (server *DbServer) ExecuteQuery(dbName, query string) ([][]string, error) {
 		data = append(data, columnValues)
 	}
 
-	return data, nil
+	result := QueryResult{
+		Data:           data,
+		RequestType:    "Select or unknown",
+		SuccessMessage: fmt.Sprintf("Request finished successfully"),
+	}
+
+	return &result, nil
 }
 
 func (server *DbServer) CloseConnections() {

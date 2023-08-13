@@ -25,7 +25,7 @@ function DbSchema(props: any) {
     try {
       setLoading(true);
       const tableNames = await GetServerDbTables(serverName, dbName, schemaName);
-      setTables(tableNames || []);
+      setTables(tableNames.sort() || []);
       setLoading(false);
     } catch (err) {
       setLoading(false);
