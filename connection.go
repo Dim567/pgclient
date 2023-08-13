@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -336,9 +337,42 @@ func (server *DbServer) ExecuteQuery(dbName, query string) ([][]string, error) {
 		return nil, err
 	}
 
+	cleanQuery := strings.Trim(query, " ")
+	cleanQuery = strings.ToLower(cleanQuery)
+	if strings.HasPrefix(cleanQuery, "insert ") ||
+		strings.HasPrefix(cleanQuery, "update ") ||
+		strings.HasPrefix(cleanQuery, "delete ") {
+		ct, err := connPool.Exec(server.ctx, query)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Query failed: %v\n", err)
+			return nil, err
+		}
+		var requestType string
+		switch {
+		case ct.Delete():
+			requestType = "Delete"
+		case ct.Insert():
+			requestType = "Insert"
+		case ct.Update():
+			requestType = "Update"
+		}
+
+		// TODO: refactor to return differend data types
+		fmt.Printf("%s request finished successfully\n", requestType)
+		var data [][]string
+		return data, nil
+	}
+
+	// TODO: insert/update/delete/select/transactions (parse incoming query)
+	// ct, err := connPool.Exec(server.ctx, query)
+	// if err != nil {
+	// 	fmt.Fprintf(os.Stderr, "Query failed: %v\n", err)
+	// 	return nil, err
+	// }
+
 	rows, err := connPool.Query(
 		server.ctx,
-		query,
+		cleanQuery,
 	)
 
 	if err != nil {
