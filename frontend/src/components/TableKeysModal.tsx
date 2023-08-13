@@ -74,7 +74,7 @@ function TableKeysModal (props: any) {
       modalType="responsive"
     >
       {
-        loading ? <Loader /> :
+        loading ? <Loader type='large' /> :
           <div className='table-data-structure'>
             {table}
           </div>

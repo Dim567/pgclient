@@ -6,10 +6,11 @@ import { QueryResult } from "../types";
 // TODO: need to change @types/react-table package to proper version
 // TODO: make sticky header
 
-function ResultsWindow (props: { queryRes: QueryResult, loading: boolean }) {
+function ResultsWindow (props: { queryRes: QueryResult, loading: boolean, showCellValue: Function }) {
   const {
     queryRes,
     loading,
+    showCellValue,
   } = props;
 
   if (loading) {
@@ -122,7 +123,11 @@ function ResultsWindow (props: { queryRes: QueryResult, loading: boolean }) {
               <div {...row.getRowProps()} className="tr">
                 {row.cells.map(cell => {
                   return (
-                    <div {...cell.getCellProps()} className="td">
+                    <div
+                      {...cell.getCellProps()}
+                      className="td"
+                      onClick={() => {showCellValue(cell.column.Header, cell.value)}}
+                    >
                       {cell.render('Cell')}
                     </div>
                   )

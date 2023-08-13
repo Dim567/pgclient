@@ -258,6 +258,7 @@ height: 100%;
   overflow: hidden;
   white-space: nowrap;
   background-color: #888888;
+  cursor: pointer;
 }
 .resizer {
   display: block;
@@ -287,6 +288,10 @@ height: 100%;
   padding: 5px;
   border: 1px solid blue;
   background-color: #BBBBBB;
+}
+
+.table-cell-data {
+  padding: 10px;
 }
 
 .execute-query-btn {

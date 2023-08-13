@@ -10,6 +10,7 @@ type MainWindowProps = {
   // runQuery: Function;
   activeDb: string;
   activeServer: string;
+  showCellValue: Function;
   // queryRes?: QueryResult;
 }
 
@@ -19,6 +20,7 @@ function MainWindow (props: MainWindowProps) {
     // queryRes,
     activeDb,
     activeServer,
+    showCellValue,
   } = props;
 
   const [vSizes, setVSizes] = useState([
@@ -61,6 +63,7 @@ function MainWindow (props: MainWindowProps) {
           <ResultsWindow
             queryRes={queryRes}
             loading={loading}
+            showCellValue={showCellValue}
           />
         </Pane>
       </SplitPane>

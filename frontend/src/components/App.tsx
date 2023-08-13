@@ -14,6 +14,8 @@ import { GetConnectionsNames, InitConnections } from "../../wailsjs/go/main/App"
 import TableStructureModal from './TableStructureModal';
 import TableKeysModal from './TableKeysModal';
 import Loader from './Loader';
+import TableCellModal from './TableCellModal';
+import { CellData } from '../types';
 
 const DEFAULT_SIDEBAR_WIDTH = 300;
 
@@ -32,6 +34,7 @@ function App() {
   const [activeSchema, setActiveSchema] = useState('');
   const [activeTable, setActiveTable] = useState('');
 
+  const [tableCellData, setTableCellData] = useState<CellData>({});
   const [modalType, setModalType] = useState(ModalTypeEnum.NONE);
 
   const [connNames, setConnNames] = useState<string[]>([]);
@@ -72,6 +75,11 @@ function App() {
 
   const showTableKeys = () => {
     setModalType(ModalTypeEnum.TABLE_KEYS);
+  }
+
+  const showCellValue = (columnName: string, value: any) => {
+    setTableCellData({ columnName, cellValue: value })
+    setModalType(ModalTypeEnum.TABLE_CELL_DATA);
   }
 
   const dbServers = connNames.map((name) => {
@@ -121,7 +129,13 @@ function App() {
           />
         );
       case ModalTypeEnum.TABLE_CELL_DATA:
-        return null; // temporary
+        return (
+          <TableCellModal
+            close={() => setModalType(ModalTypeEnum.NONE)}
+            columnName={tableCellData.columnName}
+            value={tableCellData.cellValue}
+          />
+        );
       default:
         return null;
     }
@@ -155,6 +169,7 @@ function App() {
         <MainWindow
           activeDb={activeDb}
           activeServer={activeServer}
+          showCellValue={showCellValue}
         />
       </SplitPane>
       {modalWindow(modalType)}

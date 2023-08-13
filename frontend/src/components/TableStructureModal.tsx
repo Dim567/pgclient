@@ -74,7 +74,7 @@ function TableStructureModal (props: any) {
       title={`'${tableName}' table structure`}
     >
       {
-        loading ? <Loader /> :
+        loading ? <Loader type='large' /> :
           <div className='table-data-structure'>
             {table}
           </div>

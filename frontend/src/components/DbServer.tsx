@@ -30,7 +30,7 @@ function DbServer (props: DbServerProps) {
   const [ dbVisible, setDbVisibility] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // TODO: prevent connect to already connected server???
+  // TODO: prevent connection to already connected server???
   const connect = async () => {
     try {
       setLoading(true);

@@ -3,3 +3,8 @@ export type QueryResult = {
   error?: string;
   timestamp?: number;
 }
+
+export type CellData = {
+  columnName?: string;
+  cellValue?: unknown;
+}
