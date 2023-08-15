@@ -208,11 +208,11 @@ func (app *App) GetServerDbSchemas(serverName, dbName string) ([]string, error) 
 
 func (app *App) ExecuteQuery(serverName, dbName, query string) (*QueryResult, error) {
 	if len(serverName) == 0 {
-		return nil, fmt.Errorf("server name must be non empty string")
+		return nil, fmt.Errorf("server is not selected")
 	}
 
 	if len(dbName) == 0 {
-		return nil, fmt.Errorf("db name must be non empty string")
+		return nil, fmt.Errorf("database is not selected")
 	}
 
 	if len(query) == 0 {

@@ -272,23 +272,35 @@ func (server *DbServer) GetTableKeys(dbName, schemaName, tableName string) ([]an
 
 	tableKeys, err := connPool.Query(
 		server.ctx,
-		`SELECT
-			tc.table_schema,
-			tc.constraint_name,
-			tc.table_name,
-			kcu.column_name,
-			ccu.table_schema AS foreign_table_schema,
-			ccu.table_name AS foreign_table_name,
-			ccu.column_name AS foreign_column_name
-		FROM
-			information_schema.table_constraints AS tc
-			JOIN information_schema.key_column_usage AS kcu
-				ON tc.constraint_name = kcu.constraint_name
-				AND tc.table_schema = kcu.table_schema
-			JOIN information_schema.constraint_column_usage AS ccu
-				ON ccu.constraint_name = tc.constraint_name
-				AND ccu.table_schema = tc.table_schema
-		WHERE (tc.constraint_type = 'FOREIGN KEY' OR tc.constraint_type = 'PRIMARY KEY') AND tc.table_schema=$1 AND tc.table_name=$2;`,
+		`SELECT * FROM (
+
+			SELECT
+					pgc.contype as constraint_type,
+					pgc.conname as constraint_name,
+					ccu.table_schema AS table_schema,
+					kcu.table_name as table_name,
+					CASE WHEN (pgc.contype = 'f') THEN kcu.COLUMN_NAME ELSE ccu.COLUMN_NAME END as column_name,
+					CASE WHEN (pgc.contype = 'f') THEN ccu.TABLE_NAME ELSE (null) END as reference_table,
+					CASE WHEN (pgc.contype = 'f') THEN ccu.COLUMN_NAME ELSE (null) END as reference_col,
+					CASE WHEN (pgc.contype = 'p') THEN 'yes' ELSE 'no' END as auto_inc,
+					CASE WHEN (pgc.contype = 'p') THEN 'NO' ELSE 'YES' END as is_nullable,
+
+							'integer' as data_type,
+							'0' as numeric_scale,
+							'32' as numeric_precision
+			FROM
+					pg_constraint AS pgc
+					JOIN pg_namespace nsp ON nsp.oid = pgc.connamespace
+					JOIN pg_class cls ON pgc.conrelid = cls.oid
+					JOIN information_schema.key_column_usage kcu ON kcu.constraint_name = pgc.conname
+					LEFT JOIN information_schema.constraint_column_usage ccu ON pgc.conname = ccu.CONSTRAINT_NAME
+					AND nsp.nspname = ccu.CONSTRAINT_SCHEMA
+			WHERE
+					ccu.table_schema = $1
+					AND kcu.table_name = $2
+			) as foo
+
+		ORDER BY table_name desc`,
 		schemaName,
 		tableName,
 	)
@@ -336,30 +348,35 @@ func (server *DbServer) ExecuteQuery(dbName, query string) (*QueryResult, error)
 
 	cleanQuery := strings.Trim(query, " ")
 	cleanQuery = strings.ToLower(cleanQuery)
-	if strings.HasPrefix(cleanQuery, "insert ") ||
-		strings.HasPrefix(cleanQuery, "update ") ||
-		strings.HasPrefix(cleanQuery, "delete ") {
-		ct, err := connPool.Exec(server.ctx, query)
+
+	index := strings.Index(cleanQuery, " ")
+	if index == -1 {
+		return nil, fmt.Errorf("wrong query")
+	}
+
+	command := cleanQuery[0:index]
+	commands := []string{"insert", "update", "delete", "create", "drop", "truncate", "alter"}
+	var requestType string = ""
+
+	for _, item := range commands {
+		if command == item {
+			requestType = strings.ToUpper(item[:1]) + item[1:]
+			break
+		}
+	}
+
+	if len(requestType) != 0 {
+		_, err = connPool.Exec(server.ctx, query)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Query failed: %v\n", err)
 			return nil, err
 		}
-		var requestType string
-		switch {
-		case ct.Delete():
-			requestType = "Delete"
-		case ct.Insert():
-			requestType = "Insert"
-		case ct.Update():
-			requestType = "Update"
-		}
 
-		// TODO: refactor to return different data types
 		var data [][]string
 		result := QueryResult{
 			Data:           data,
 			RequestType:    requestType,
-			SuccessMessage: fmt.Sprintf("%s request finished successfully", requestType),
+			SuccessMessage: fmt.Sprintf("%s request completed successfully", requestType),
 		}
 		return &result, nil
 	}
@@ -400,7 +417,7 @@ func (server *DbServer) ExecuteQuery(dbName, query string) (*QueryResult, error)
 	result := QueryResult{
 		Data:           data,
 		RequestType:    "Select or unknown",
-		SuccessMessage: fmt.Sprintf("Request finished successfully"),
+		SuccessMessage: fmt.Sprintf("Request completed successfully"),
 	}
 
 	return &result, nil

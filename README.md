@@ -2,10 +2,16 @@
 
 ## About
 
-This is the official Wails React-TS template.
+Simple Linux GUI client for PostgreSQL.
 
-You can configure the project by editing `wails.json`. More information about the project settings can be found
-here: https://wails.io/docs/reference/project-config
+Inspired by [pgAdmin](https://www.pgadmin.org/).
+
+Based on [wails](https://wails.io/).
+
+Made as experiment.
+
+Initial idea was to create desktop app using `golang+react`.
+
 
 ## Live Development
 
@@ -20,6 +26,7 @@ To build a redistributable, production mode package, use `wails build`.
 
 ## Issues
 
-1. Can't delete database. Need to decide if this option should be provided to user.
-2. Inside results window table is scrollable. Need to make table header sticky in order to be able to see what data table cell represents.
+1. Can't delete database. Need to decide if this option should be available for user.
+2. Inside results window, table is scrollable. Need to make table header sticky, in order to be able to see what data table cell represents.
 3. Transactions is not supported.
+4. No way to display unique keys and indexes.
