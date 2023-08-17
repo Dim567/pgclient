@@ -28,5 +28,5 @@ To build a redistributable, production mode package, use `wails build`.
 
 1. Can't delete database. Need to decide if this option should be available for user.
 2. Inside results window, table is scrollable. Need to make table header sticky, in order to be able to see what data table cell represents.
-3. Transactions is not supported.
-4. No way to display unique keys and indexes.
+3. Transactions are not supported.
+4. Indexes are not displayed.

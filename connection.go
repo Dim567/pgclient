@@ -272,10 +272,13 @@ func (server *DbServer) GetTableKeys(dbName, schemaName, tableName string) ([]an
 
 	tableKeys, err := connPool.Query(
 		server.ctx,
-		`SELECT * FROM (
-
-			SELECT
-					pgc.contype as constraint_type,
+		`SELECT
+					CASE
+							WHEN (pgc.contype = 'c') THEN 'check_constraint'
+							WHEN (pgc.contype = 'f') THEN 'foreign_key'
+							WHEN (pgc.contype = 'p') THEN 'primary_key'
+							WHEN (pgc.contype = 'u') THEN 'unique_key'
+							ELSE 'other_constraint' END as constraint_type,
 					pgc.conname as constraint_name,
 					ccu.table_schema AS table_schema,
 					kcu.table_name as table_name,
@@ -298,7 +301,6 @@ func (server *DbServer) GetTableKeys(dbName, schemaName, tableName string) ([]an
 			WHERE
 					ccu.table_schema = $1
 					AND kcu.table_name = $2
-			) as foo
 
 		ORDER BY table_name desc`,
 		schemaName,
