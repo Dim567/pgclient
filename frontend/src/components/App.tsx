@@ -16,6 +16,7 @@ import TableKeysModal from './TableKeysModal';
 import Loader from './Loader';
 import TableCellModal from './TableCellModal';
 import { CellData } from '../types';
+import TableIndexesModal from './TableIndexesModal';
 
 const DEFAULT_SIDEBAR_WIDTH = 300;
 
@@ -24,6 +25,7 @@ enum ModalTypeEnum {
   TABLE_CELL_DATA = 'table_cell_data',
   TABLE_STRUCTURE = 'table_structure',
   TABLE_KEYS = 'table_keys',
+  TABLE_INDEXES = 'table_indexes',
   NONE = 'none',
 }
 
@@ -77,6 +79,10 @@ function App() {
     setModalType(ModalTypeEnum.TABLE_KEYS);
   }
 
+  const showIndexes = () => {
+    setModalType(ModalTypeEnum.TABLE_INDEXES);
+  }
+
   const showCellValue = (columnName: string, value: any) => {
     setTableCellData({ columnName, cellValue: value })
     setModalType(ModalTypeEnum.TABLE_CELL_DATA);
@@ -94,6 +100,7 @@ function App() {
       showConnectionSettings,
       showTableStructure,
       showTableKeys,
+      showIndexes,
     }
     return (<DbServer key={name} {...server} />)
   });
@@ -121,6 +128,16 @@ function App() {
       case ModalTypeEnum.TABLE_KEYS:
         return (
           <TableKeysModal
+            serverName={activeServer}
+            dbName={activeDb}
+            close={() => setModalType(ModalTypeEnum.NONE)}
+            tableName={activeTable}
+            schemaName={activeSchema}
+          />
+        );
+      case ModalTypeEnum.TABLE_INDEXES:
+        return (
+          <TableIndexesModal
             serverName={activeServer}
             dbName={activeDb}
             close={() => setModalType(ModalTypeEnum.NONE)}

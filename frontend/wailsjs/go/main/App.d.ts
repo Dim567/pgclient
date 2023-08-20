@@ -16,6 +16,8 @@ export function GetServerDbSchemas(arg1:string,arg2:string):Promise<Array<string
 
 export function GetServerDbTables(arg1:string,arg2:string,arg3:string):Promise<Array<string>>;
 
+export function GetTableIndexes(arg1:string,arg2:string,arg3:string,arg4:string):Promise<Array<any>>;
+
 export function GetTableKeys(arg1:string,arg2:string,arg3:string,arg4:string):Promise<Array<any>>;
 
 export function GetTableStructure(arg1:string,arg2:string,arg3:string,arg4:string):Promise<Array<any>>;

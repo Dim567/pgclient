@@ -14,8 +14,6 @@ function DbServer (props: DbServerProps) {
   const {
     name,
     selected, // if true => all queries in query editor run for this server
-    // dbNames,
-    // connect,
     activeDb,
     setActiveDb,
     setActiveServer,
@@ -24,6 +22,7 @@ function DbServer (props: DbServerProps) {
     showConnectionSettings,
     showTableStructure,
     showTableKeys,
+    showIndexes,
   } = props;
 
   const [dbList, setDbList] = useState<string[]>([]);
@@ -63,6 +62,7 @@ function DbServer (props: DbServerProps) {
       activateServer={setActiveServer} // This is necessary because we may click on other server db while active server is different (chosen another server in the list)
       showTableStructure={showTableStructure}
       showTableKeys={showTableKeys}
+      showIndexes={showIndexes}
       setActiveSchema={setActiveSchema}
       setActiveTable={setActiveTable}
     />

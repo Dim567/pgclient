@@ -335,6 +335,74 @@ func (server *DbServer) GetTableKeys(dbName, schemaName, tableName string) ([]an
 	return res, nil
 }
 
+func (server *DbServer) GetTableIndexes(dbName, schemaName, tableName string) ([]any, error) {
+	connPool, err := server.getDbConnection(dbName)
+	if err != nil {
+		return nil, err
+	}
+
+	tableKeys, err := connPool.Query(
+		server.ctx,
+		`SELECT
+				n.nspname as schema_name,
+				t.relname AS table_name,
+				i.relname AS index_name,
+				array_to_string(array_agg(a.attname), ', ') AS column_names
+			FROM
+					pg_class t,
+					pg_class i,
+					pg_index ix,
+					pg_attribute a,
+					pg_catalog.pg_namespace n
+			WHERE
+					t.oid = ix.indrelid
+					and i.oid = ix.indexrelid
+					and a.attrelid = t.oid
+					and a.attnum = ANY(ix.indkey)
+					and t.relkind = 'r'
+					and n.oid = t.relnamespace
+					and n.nspname = $1
+					and t.relname = $2
+			GROUP BY
+					t.relname,
+					n.nspname,
+					i.relname
+			ORDER BY
+					t.relname,
+					n.nspname,
+					i.relname;`,
+		schemaName,
+		tableName,
+	)
+
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Query failed: %v\n", err)
+		return nil, err
+	}
+
+	defer tableKeys.Close()
+
+	var res []any
+
+	var columnNames []string
+	for _, fieldDescription := range tableKeys.FieldDescriptions() {
+		columnNames = append(columnNames, fieldDescription.Name)
+	}
+
+	res = append(res, columnNames)
+
+	for tableKeys.Next() {
+		values, err := tableKeys.Values()
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Rows scan failed: %v\n", err)
+			return nil, err
+		}
+		res = append(res, values)
+	}
+
+	return res, nil
+}
+
 func (server *DbServer) ExecuteQuery(dbName, query string) (*QueryResult, error) {
 	if len(dbName) == 0 {
 		return nil, fmt.Errorf("db for the query is not specified")

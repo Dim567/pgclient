@@ -14,6 +14,7 @@ type DbProps = {
   activateServer: Function;
   showTableStructure: Function;
   showTableKeys: Function;
+  showIndexes: Function;
   setActiveSchema: Function,
   setActiveTable: Function,
 }
@@ -27,6 +28,7 @@ function Db(props: DbProps) {
     activateServer,
     showTableStructure,
     showTableKeys,
+    showIndexes,
     setActiveSchema,
     setActiveTable,
   } = props;
@@ -61,6 +63,7 @@ function Db(props: DbProps) {
       serverName={dbServer}
       showTableStructure={showTableStructure}
       showTableKeys={showTableKeys}
+      showIndexes={showIndexes}
       setActiveServer={() => activateServer(dbServer)}
       setActiveDb={() => activateDb(name)}
       setActiveSchema={setActiveSchema}

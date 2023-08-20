@@ -252,6 +252,16 @@ func (app *App) GetTableKeys(serverName, dbName, schemaName, tableName string) (
 	return data, nil
 }
 
+func (app *App) GetTableIndexes(serverName, dbName, schemaName, tableName string) ([]any, error) {
+	dbServer := app.dbServers[serverName]
+	data, err := dbServer.GetTableIndexes(dbName, schemaName, tableName)
+	if err != nil {
+		return nil, err
+	}
+
+	return data, nil
+}
+
 func (app *App) DeleteServer(serverName string) error {
 	dbServer, ok := app.dbServers[serverName]
 	if !ok {
