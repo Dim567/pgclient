@@ -1,3 +1,5 @@
+import CloseIcon from '@mui/icons-material/Close';
+
 function ModalContainer (props: any) {
   const {
     children,
@@ -17,9 +19,11 @@ function ModalContainer (props: any) {
             {title}
           </div>
           <div
-            className="modal-content__close-button"
+            className="modal-content__close-button clickable"
             onClick={close}
-          >X</div>
+          >
+            <CloseIcon />
+          </div>
         </div>
         {/* BODY */}
         <div className="modal-content__body">

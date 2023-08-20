@@ -169,13 +169,13 @@ function App() {
         <Pane minSize={100} maxSize='50%'>
           <Sidebar>
             <div
-              className='connection-settings-show'
+              className='connection-settings-show clickable'
               onClick={() => {
                 setActiveServer('');
                 setModalType(ModalTypeEnum.SERVER_CONNECTION_SETTINGS);
               }}
             >
-              Create server connection <AddIcon />
+              <div>Create server connection</div> <AddIcon />
             </div>
             <div className='server sidebar-nested-block'>
               Db servers

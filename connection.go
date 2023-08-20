@@ -356,20 +356,20 @@ func (server *DbServer) GetTableIndexes(dbName, schemaName, tableName string) ([
 					pg_catalog.pg_namespace n
 			WHERE
 					t.oid = ix.indrelid
-					and i.oid = ix.indexrelid
-					and a.attrelid = t.oid
-					and a.attnum = ANY(ix.indkey)
-					and t.relkind = 'r'
-					and n.oid = t.relnamespace
-					and n.nspname = $1
-					and t.relname = $2
+					AND i.oid = ix.indexrelid
+					AND a.attrelid = t.oid
+					AND a.attnum = ANY(ix.indkey)
+					AND t.relkind = 'r'
+					AND n.oid = t.relnamespace
+					AND n.nspname = $1
+					AND t.relname = $2
 			GROUP BY
-					t.relname,
 					n.nspname,
+					t.relname,
 					i.relname
 			ORDER BY
-					t.relname,
 					n.nspname,
+					t.relname,
 					i.relname;`,
 		schemaName,
 		tableName,

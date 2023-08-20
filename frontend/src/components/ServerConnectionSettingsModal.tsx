@@ -113,14 +113,14 @@ function ServerConnectionSettingsModal (props: any) {
 
         <div className="connection-settings__pane-input-line">
           <div className="connection-settings__pane-labels">
-            <button className="btn" onClick={pingConnection}>Ping</button>
+            <button className="clickable" onClick={pingConnection}>Ping</button>
           </div>
           {pingIndicator}
         </div>
 
         <div className="connection-settings__pane-input-line">
           <div className="connection-settings__pane-labels">
-            <button className="btn" onClick={saveConnectionSettings}>Save</button>
+            <button className="clickable" onClick={saveConnectionSettings}>Save</button>
           </div>
           {saveIndicator}
         </div>

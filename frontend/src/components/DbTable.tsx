@@ -17,7 +17,7 @@ function DbTable(props: any) {
 
   return (
     <div
-      className="db-table sidebar-nested-block"
+      className="sidebar-nested-block clickable"
       onClick={() => {
         setActiveServer();
         setActiveDb();

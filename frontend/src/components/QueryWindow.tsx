@@ -20,7 +20,7 @@ function QueryWindow (props: QueryWindowProps) {
   return (
     <div id="query-window">
       <div id="query-handlers-bar">
-        <button className="execute-query-btn" onClick={() => runQuery(server, db, query)}>Execute query</button>
+        <button className="clickable" onClick={() => runQuery(server, db, query)}>Execute query</button>
       </div>
       <div id="query-area">
         <textarea

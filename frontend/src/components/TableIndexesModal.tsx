@@ -70,7 +70,7 @@ function TableIndexesModal (props: any) {
   return (
     <ModalContainer
       close={close}
-      title={`'${tableName}' table keys`}
+      title={`'${tableName}' table indexes`}
       modalType="responsive"
     >
       {

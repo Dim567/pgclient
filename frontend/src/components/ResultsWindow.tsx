@@ -136,7 +136,7 @@ function ResultsWindow (props: {
                   return (
                     <div
                       {...cell.getCellProps()}
-                      className="td"
+                      className="td clickable"
                       onClick={() => {showCellValue(cell.column.Header, cell.value)}}
                     >
                       {cell.render('Cell')}
