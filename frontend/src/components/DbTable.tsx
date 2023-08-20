@@ -26,15 +26,18 @@ function DbTable(props: any) {
       }}
     >
       {name}
-      <SettingsIcon onClick={() => {
-        showStructure();
-      }}/>
-      <KeyIcon onClick={() => {
-        showTableKeys();
-      }}/>
-      <StorageIcon onClick={() => {
-        showIndexes();
-      }}/>
+      <SettingsIcon
+        titleAccess='table structure'
+        onClick={() => { showStructure(); }}
+      />
+      <KeyIcon
+        titleAccess='table keys'
+        onClick={() => { showTableKeys(); }}
+      />
+      <StorageIcon
+        titleAccess='table indexes'
+        onClick={() => { showIndexes(); }}
+      />
     </div>
   );
 }

@@ -79,12 +79,14 @@ function DbServer (props: DbServerProps) {
         setDbVisibility((dbVisible) => !dbVisible);
       }}>
         <CircleIcon
+          titleAccess={selected ? 'connection active' : 'connection inactive'}
           fontSize='small'
           htmlColor={selected ? '#04FF04' : 'white'}
         />
         {name}
         {  dbVisible ? <ExpandLessIcon fontSize='small'/> : <ExpandMoreIcon fontSize='small'/> }
         <SettingsIcon
+          titleAccess='server connection settings'
           onClick={(e) => {
             e.stopPropagation();
             e.nativeEvent.stopImmediatePropagation();
@@ -93,6 +95,7 @@ function DbServer (props: DbServerProps) {
           fontSize='small'
         />
         <DeleteForeverIcon
+          titleAccess='delete server connection'
           onClick={(e) => {
             e.stopPropagation();
             e.nativeEvent.stopImmediatePropagation();
