@@ -17,6 +17,7 @@ function DbSchema(props: any) {
     setActiveDb,
     setActiveSchema,
     setActiveTable,
+    showBackendError,
   } = props;
   const [tablesVisible, setTablesVisibility] = useState(false);
   const [dbTables, setTables] = useState<string[]>([]);
@@ -30,7 +31,7 @@ function DbSchema(props: any) {
       setLoading(false);
     } catch (err) {
       setLoading(false);
-      console.log('GOLANG ERROR: ', err)
+      showBackendError(err);
     }
   }
 

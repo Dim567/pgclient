@@ -23,6 +23,7 @@ function DbServer (props: DbServerProps) {
     showTableStructure,
     showTableKeys,
     showIndexes,
+    showBackendError,
   } = props;
 
   const [dbList, setDbList] = useState<string[]>([]);
@@ -38,7 +39,7 @@ function DbServer (props: DbServerProps) {
       setLoading(false);
     } catch (err) {
       setLoading(false);
-      console.log('Backend error: ', err) // TODO: show error in output
+      showBackendError(err);
     }
   }
 
@@ -48,7 +49,7 @@ function DbServer (props: DbServerProps) {
       // TODO: activate one of the existing servers if any, after deleting this one
       setActiveServer(`${Date.now()}-fake`);
     } catch (err) {
-      console.log('Backend error: ', err)
+      showBackendError(err);
     }
   }
 
@@ -65,6 +66,7 @@ function DbServer (props: DbServerProps) {
       showIndexes={showIndexes}
       setActiveSchema={setActiveSchema}
       setActiveTable={setActiveTable}
+      showBackendError={showBackendError}
     />
   ));
 

@@ -17,6 +17,7 @@ type DbProps = {
   showIndexes: Function;
   setActiveSchema: Function,
   setActiveTable: Function,
+  showBackendError: Function,
 }
 
 function Db(props: DbProps) {
@@ -31,6 +32,7 @@ function Db(props: DbProps) {
     showIndexes,
     setActiveSchema,
     setActiveTable,
+    showBackendError,
   } = props;
 
   const [visible, setVisibility] = useState(false);
@@ -45,7 +47,7 @@ function Db(props: DbProps) {
       setLoading(false);
     } catch (err) {
       setLoading(false);
-      console.log('GOLANG ERROR: ', err)
+      showBackendError(err);
     }
   }
 
@@ -68,6 +70,7 @@ function Db(props: DbProps) {
       setActiveDb={() => activateDb(name)}
       setActiveSchema={setActiveSchema}
       setActiveTable={setActiveTable}
+      showBackendError={showBackendError}
     />
   )
   return (

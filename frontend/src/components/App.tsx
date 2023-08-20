@@ -13,10 +13,10 @@ import Sidebar from './Sidebar';
 import { GetConnectionsNames, InitConnections } from "../../wailsjs/go/main/App";
 import TableStructureModal from './TableStructureModal';
 import TableKeysModal from './TableKeysModal';
-import Loader from './Loader';
 import TableCellModal from './TableCellModal';
 import { CellData } from '../types';
 import TableIndexesModal from './TableIndexesModal';
+import BackendErrorModal from './BackendErrorModal';
 
 const DEFAULT_SIDEBAR_WIDTH = 300;
 
@@ -26,6 +26,7 @@ enum ModalTypeEnum {
   TABLE_STRUCTURE = 'table_structure',
   TABLE_KEYS = 'table_keys',
   TABLE_INDEXES = 'table_indexes',
+  BACKEND_ERROR = 'backend_error',
   NONE = 'none',
 }
 
@@ -41,10 +42,12 @@ function App() {
 
   const [connNames, setConnNames] = useState<string[]>([]);
 
+  const [backendError, setBackendError] = useState('');
+
   useEffect(() => {
     const initConnections = async () => {
       try {
-        await InitConnections()
+        await InitConnections();
       } catch(err) {
         console.log(err);
       }
@@ -88,6 +91,11 @@ function App() {
     setModalType(ModalTypeEnum.TABLE_CELL_DATA);
   }
 
+  const showBackendError = (error: string) => {
+    setBackendError(error);
+    setModalType(ModalTypeEnum.BACKEND_ERROR);
+  }
+
   const dbServers = connNames.map((name) => {
     const server = {
       name,
@@ -101,6 +109,7 @@ function App() {
       showTableStructure,
       showTableKeys,
       showIndexes,
+      showBackendError,
     }
     return (<DbServer key={name} {...server} />)
   });
@@ -151,6 +160,13 @@ function App() {
             close={() => setModalType(ModalTypeEnum.NONE)}
             columnName={tableCellData.columnName}
             value={tableCellData.cellValue}
+          />
+        );
+      case ModalTypeEnum.BACKEND_ERROR:
+        return (
+          <BackendErrorModal
+            close={() => setModalType(ModalTypeEnum.NONE)}
+            error={backendError}
           />
         );
       default:

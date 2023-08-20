@@ -11,4 +11,5 @@ export interface DbServerProps {
   showTableStructure: Function;
   showTableKeys: Function;
   showIndexes: Function;
+  showBackendError: Function;
 }

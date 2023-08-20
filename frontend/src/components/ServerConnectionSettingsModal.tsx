@@ -76,7 +76,7 @@ function ServerConnectionSettingsModal (props: any) {
       setSaveStatus('Success')
       setActiveServer(connectionName);
     } catch (err) {
-      setSaveStatus('Failure') // TODO: add error message somewhere to output
+      setSaveStatus('Failure'); // TODO: add error message somewhere to output
     }
   }
 
