@@ -39,7 +39,8 @@ function MainWindow (props: MainWindowProps) {
       setQueryRes({ data, timestamp });
       setLoading(false);
     } catch (err) {
-      setQueryRes({ error: err as string });
+      const errorMessage = typeof err === 'string' ? err : (err as any).message;
+      setQueryRes({ error: errorMessage });
       setLoading(false);
     }
   }

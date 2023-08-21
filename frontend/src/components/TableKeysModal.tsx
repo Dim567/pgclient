@@ -10,6 +10,7 @@ function TableKeysModal (props: any) {
     serverName,
     dbName,
     schemaName,
+    showBackendError,
   } = props;
 
   const [tableKeys, setTableKeys] = useState<string[][]>();
@@ -29,7 +30,7 @@ function TableKeysModal (props: any) {
         setLoading(false);
       } catch (err) {
         setLoading(false);
-        console.log(err);
+        showBackendError(err);
       }
     }
 

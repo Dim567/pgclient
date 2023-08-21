@@ -10,6 +10,7 @@ function TableStructureModal (props: any) {
     serverName,
     dbName,
     schemaName,
+    showBackendError,
   } = props;
 
   const [tableStructure, setTableStructure] = useState<string[][]>();
@@ -29,7 +30,7 @@ function TableStructureModal (props: any) {
         setLoading(false);
       } catch (err) {
         setLoading(false);
-        console.log(err);
+        showBackendError(err);
       }
     }
 

@@ -10,6 +10,7 @@ function TableIndexesModal (props: any) {
     serverName,
     dbName,
     schemaName,
+    showBackendError,
   } = props;
 
   const [tableIndexes, setTableIndexes] = useState<string[][]>();
@@ -29,7 +30,7 @@ function TableIndexesModal (props: any) {
         setLoading(false);
       } catch (err) {
         setLoading(false);
-        console.log(err);
+        showBackendError(err);
       }
     }
 

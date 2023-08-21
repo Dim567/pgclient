@@ -7,6 +7,7 @@ function ServerConnectionSettingsModal (props: any) {
     close,
     serverName,
     setActiveServer,
+    showBackendError,
   } = props;
 
   // TODO: add fields validation (every field must be populated, connection name must be unique)
@@ -43,7 +44,7 @@ function ServerConnectionSettingsModal (props: any) {
           setPassword(Password);
         }
       } catch (err) {
-        console.log(err);
+        showBackendError(err);
       }
     }
 

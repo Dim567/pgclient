@@ -44,31 +44,6 @@ function App() {
 
   const [backendError, setBackendError] = useState('');
 
-  useEffect(() => {
-    const initConnections = async () => {
-      try {
-        await InitConnections();
-      } catch(err) {
-        console.log(err);
-      }
-    };
-
-    initConnections();
-  }, []);
-
-  useEffect(() => {
-    const fetchConnections = async () => {
-      try {
-        const cNames = await GetConnectionsNames(); // TODO: rename to server names
-        setConnNames(cNames);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    fetchConnections();
-  }, [activeServer]);
-
   const showConnectionSettings = (connName: string) => {
     setActiveServer(connName);
     setModalType(ModalTypeEnum.SERVER_CONNECTION_SETTINGS);
@@ -91,10 +66,36 @@ function App() {
     setModalType(ModalTypeEnum.TABLE_CELL_DATA);
   }
 
-  const showBackendError = (error: string) => {
-    setBackendError(error);
+  const showBackendError = (error: unknown) => {
+    const errorMessage = typeof error === 'string' ? error : (error as any).message;
+    setBackendError(errorMessage);
     setModalType(ModalTypeEnum.BACKEND_ERROR);
   }
+
+  useEffect(() => {
+    const initConnections = async () => {
+      try {
+        await InitConnections();
+      } catch(err) {
+        showBackendError(err);
+      }
+    };
+
+    initConnections();
+  }, []);
+
+  useEffect(() => {
+    const fetchConnections = async () => {
+      try {
+        const cNames = await GetConnectionsNames(); // TODO: rename to server names
+        setConnNames(cNames);
+      } catch (err) {
+        showBackendError(err);
+      }
+    };
+
+    fetchConnections();
+  }, [activeServer]);
 
   const dbServers = connNames.map((name) => {
     const server = {
@@ -122,6 +123,7 @@ function App() {
             serverName={activeServer}
             close={() => setModalType(ModalTypeEnum.NONE)}
             setActiveServer={setActiveServer}
+            showBackendError={showBackendError}
           />
         );
       case ModalTypeEnum.TABLE_STRUCTURE:
@@ -132,6 +134,7 @@ function App() {
             close={() => setModalType(ModalTypeEnum.NONE)}
             tableName={activeTable}
             schemaName={activeSchema}
+            showBackendError={showBackendError}
           />
         );
       case ModalTypeEnum.TABLE_KEYS:
@@ -142,6 +145,7 @@ function App() {
             close={() => setModalType(ModalTypeEnum.NONE)}
             tableName={activeTable}
             schemaName={activeSchema}
+            showBackendError={showBackendError}
           />
         );
       case ModalTypeEnum.TABLE_INDEXES:
@@ -152,6 +156,7 @@ function App() {
             close={() => setModalType(ModalTypeEnum.NONE)}
             tableName={activeTable}
             schemaName={activeSchema}
+            showBackendError={showBackendError}
           />
         );
       case ModalTypeEnum.TABLE_CELL_DATA:
