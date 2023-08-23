@@ -4,8 +4,10 @@ import (
 	"embed"
 
 	"github.com/wailsapp/wails/v2"
+	"github.com/wailsapp/wails/v2/pkg/menu"
 	"github.com/wailsapp/wails/v2/pkg/options"
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 //go:embed all:frontend/dist
@@ -15,11 +17,18 @@ func main() {
 	// Create an instance of the app structure
 	app := NewApp()
 
+	AppMenu := menu.NewMenu()
+	AboutMenu := AppMenu.AddSubmenu("About")
+	AboutMenu.AddText("See on GitHub", nil, func(data *menu.CallbackData) {
+		runtime.BrowserOpenURL(app.ctx, "https://github.com/Dim567/pgclient")
+	})
+
 	// Create application with options
 	err := wails.Run(&options.App{
 		Title:  "pgclient",
 		Width:  1024,
 		Height: 768,
+		Menu:   AppMenu,
 		AssetServer: &assetserver.Options{
 			Assets: assets,
 		},

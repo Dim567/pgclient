@@ -53,7 +53,7 @@ func (app *App) InitConnections() {
 func (app *App) PingConnection(host, port, user, password string) error {
 	connString := fmt.Sprintf("postgres://%s:%s@%s:%s", user, password, host, port)
 
-	// this doesn't return error if credentials wrong for some reason( need to investigate)
+	// this doesn't return error if credentials wrong for some reason (need to investigate)
 	// seems like actual connection happens only when we make a query request
 	connPool, err := pgxpool.New(
 		app.ctx,
